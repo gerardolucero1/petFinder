@@ -1,3 +1,41 @@
+<style scoped>
+    .drawer-body{
+        background: rgb(21,45,60);
+        background: -webkit-linear-gradient(bottom, rgba(21,45,60,1) 0%, rgba(24,80,113,1) 64%, rgba(33,99,134,1) 100%);
+        background: -o-linear-gradient(bottom, rgba(21,45,60,1) 0%, rgba(24,80,113,1) 64%, rgba(33,99,134,1) 100%);
+        background: linear-gradient(to top, rgba(21,45,60,1) 0%, rgba(24,80,113,1) 64%, rgba(33,99,134,1) 100%);
+    }
+
+    .drawer-layer{
+        background-image: url('https://img.wallpapersafari.com/desktop/1280/1024/14/66/raICAv.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .drawer-header {
+        width: 100%;
+        height: 20%;
+    }
+
+    .drawer-item-container{
+        width: 100%;
+        padding-left: 100px;
+    }
+
+    .drawer-item {
+        color: #333333;
+        font-size: 16;
+        margin-left: 40px;
+    }
+
+    .line{
+        width: 80%;
+        border-width: 1 0 0 0;
+        border-color: #1D5A7B;
+    }
+</style>
+
 <template>
     <GridLayout class="drawer-body" ~drawerContent rows="*, 60">
         <StackLayout row="0">
@@ -42,12 +80,18 @@
     </GridLayout>
 </template>
 
-<script >
+<script>
 //Firebase
 const firebase = require("nativescript-plugin-firebase")
 
 //Vuex
 import { mapState } from 'vuex'
+
+//Navbar
+import Navbar from './Navbar.vue'
+
+//Pages
+import AddPet from '../user/AddPet.vue'
 
 export default {
     name: 'Navbar',
@@ -63,43 +107,25 @@ export default {
                 'user'
             ]),
     },
+
+    methods:{
+        // goToAddPet(){
+        //     this.$navigateTo(AddPet)
+        // }
+    }
 }
 </script>
 
-<style scoped>
-    .drawer-body{
-        background: rgb(21,45,60);
-        background: -webkit-linear-gradient(bottom, rgba(21,45,60,1) 0%, rgba(24,80,113,1) 64%, rgba(33,99,134,1) 100%);
-        background: -o-linear-gradient(bottom, rgba(21,45,60,1) 0%, rgba(24,80,113,1) 64%, rgba(33,99,134,1) 100%);
-        background: linear-gradient(to top, rgba(21,45,60,1) 0%, rgba(24,80,113,1) 64%, rgba(33,99,134,1) 100%);
-    }
 
-    .drawer-layer{
-        background-image: url('https://img.wallpapersafari.com/desktop/1280/1024/14/66/raICAv.jpg');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-    }
 
-    .drawer-header {
-        width: 100%;
-        height: 20%;
-    }
 
-    .drawer-item-container{
-        width: 100%;
-        padding-left: 100px;
-    }
 
-    .drawer-item {
-        color: #333333;
-        font-size: 16;
-        margin-left: 40px;
-    }
 
-    .line{
-        width: 80%;
-        border-width: 1 0 0 0;
-        border-color: #1D5A7B;
-    }
-</style>
+
+
+
+
+
+
+
+

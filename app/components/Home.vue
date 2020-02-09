@@ -10,6 +10,18 @@
         font-size: 18px;
     }
 
+    .navigation{
+        width: 100%;
+        height: 100%;
+        left: 0;
+        bottom: 0;
+        background-color: white;
+        border-width: 1 0 0 0;
+        border-color: rgba(218, 218, 218, 1);
+        border-radius: 0;
+    }
+
+    /*Estilos Navbar*/
     .drawer-body{
         background: rgb(21,45,60);
         background: -webkit-linear-gradient(bottom, rgba(21,45,60,1) 0%, rgba(24,80,113,1) 64%, rgba(33,99,134,1) 100%);
@@ -31,7 +43,7 @@
 
     .drawer-item-container{
         width: 100%;
-        padding-left: 100px;
+        padding: 30px 0 30px 100px;
     }
 
     .drawer-item {
@@ -46,17 +58,7 @@
         border-color: #1D5A7B;
     }
 
-    .navigation{
-        width: 100%;
-        height: 100%;
-        left: 0;
-        bottom: 0;
-        background-color: white;
-        border-width: 1 0 0 0;
-        border-color: rgba(218, 218, 218, 1);
-        border-radius: 0;
-    }
-
+    /*Estilos Footer*/
     .btn-navigation{
         width: 90px;
     }
@@ -81,48 +83,49 @@
         </ActionBar>
 
         <RadSideDrawer ref="drawer">
-            <Navbar />
-            <!-- <GridLayout class="drawer-body" ~drawerContent rows="*, 60">
-                <StackLayout row="0">
-                    <FlexboxLayout height="200" justifyContent="center" alignItems="center" flexDirection="column">
-                        <Image width="70" borderRadius="100" src="http://i2.wp.com/www.kpopscene.com/wp-content/uploads/2016/05/chaewon-april-04.jpg" />
+            <!-- Inicia Navbar -->
+                <GridLayout class="drawer-body" ~drawerContent rows="*, 60">
+                    <StackLayout row="0">
+                        <FlexboxLayout height="200" justifyContent="center" alignItems="center" flexDirection="column">
+                            <Image width="70" borderRadius="100" src="http://i2.wp.com/www.kpopscene.com/wp-content/uploads/2016/05/chaewon-april-04.jpg" />
 
-                        <Label color="white" :text="user.name" fontWeight="bold" fontSize="15" />
-                        <Label color="#5FA5C4" :text="user.email" fontWeight="bold" fontSize="12" />
+                            <Label color="white" :text="user.name" fontWeight="bold" fontSize="15" />
+                            <Label color="#5FA5C4" :text="user.email" fontWeight="bold" fontSize="12" />
+                        </FlexboxLayout>
+
+                        <FlexboxLayout class="drawer-item-container" justifyContent="flex-start" alignItems="center">
+                            <Image width="20" src="https://image.flaticon.com/icons/png/512/64/64572.png" stretch="aspectFit" />
+                            <Label color="white" fontSize="13" class="drawer-item" text="Mi Perfil"/>
+                        </FlexboxLayout>
+
+                        <FlexboxLayout class="drawer-item-container" marginTop="20" justifyContent="flex-start" alignItems="center">
+                            <Image width="20" src="https://image.flaticon.com/icons/png/512/30/30571.png" stretch="aspectFit" />
+                            <Label color="white" fontSize="13" class="drawer-item" text="Mis Matchs"/>
+                        </FlexboxLayout>
+
+                        <FlexboxLayout class="drawer-item-container" marginTop="20" justifyContent="flex-start" alignItems="center">
+                            <Image width="20" src="https://www.pngrepo.com/download/165203/online-store-shopping-cart.png" stretch="aspectFit" />
+                            <Label color="white" fontSize="13" class="drawer-item" text="Mi Tienda"/>
+                        </FlexboxLayout>
+
+                        <StackLayout class="line" marginTop="20" />
+
+                        <FlexboxLayout class="drawer-item-container" marginTop="20" justifyContent="flex-start" alignItems="center" @tap="goToAddPet">
+                            <Image width="20" src="https://icons-for-free.com/iconfiles/png/512/new+plus+icon-1320196808672578110.png" stretch="aspectFit" />
+                            <Label color="white" fontSize="13" class="drawer-item" text="Agregar Mascota"/>
+                        </FlexboxLayout>
+
+                        <FlexboxLayout class="drawer-item-container" marginTop="20" justifyContent="flex-start" alignItems="center">
+                            <Image width="20" src="https://image.flaticon.com/icons/png/512/40/40031.png" stretch="aspectFit" />
+                            <Label color="white" fontSize="13" class="drawer-item" text="Mis Configuraciones"/>
+                        </FlexboxLayout>
+                    </StackLayout>
+
+                    <FlexboxLayout row="1" justifyContent="center" alignItems="center">
+                        <Label color="#43809D" fontSize="20" fontWeight="bold" text="PetFinder" />
                     </FlexboxLayout>
-
-                    <FlexboxLayout class="drawer-item-container" justifyContent="flex-start" alignItems="center">
-                        <Image width="20" src="https://image.flaticon.com/icons/png/512/64/64572.png" stretch="aspectFit" />
-                        <Label color="white" fontSize="13" class="drawer-item" text="Mi Perfil"/>
-                    </FlexboxLayout>
-
-                    <FlexboxLayout class="drawer-item-container" marginTop="40" justifyContent="flex-start" alignItems="center">
-                        <Image width="20" src="https://image.flaticon.com/icons/png/512/30/30571.png" stretch="aspectFit" />
-                        <Label color="white" fontSize="13" class="drawer-item" text="Mis Matchs"/>
-                    </FlexboxLayout>
-
-                    <FlexboxLayout class="drawer-item-container" marginTop="40" justifyContent="flex-start" alignItems="center">
-                        <Image width="20" src="https://www.pngrepo.com/download/165203/online-store-shopping-cart.png" stretch="aspectFit" />
-                        <Label color="white" fontSize="13" class="drawer-item" text="Mi Tienda"/>
-                    </FlexboxLayout>
-
-                    <StackLayout class="line" marginTop="40" />
-
-                    <FlexboxLayout class="drawer-item-container" marginTop="40" justifyContent="flex-start" alignItems="center">
-                        <Image width="20" src="https://icons-for-free.com/iconfiles/png/512/new+plus+icon-1320196808672578110.png" stretch="aspectFit" />
-                        <Label color="white" fontSize="13" class="drawer-item" text="Agregar Mascota"/>
-                    </FlexboxLayout>
-
-                    <FlexboxLayout class="drawer-item-container" marginTop="40" justifyContent="flex-start" alignItems="center">
-                        <Image width="20" src="https://image.flaticon.com/icons/png/512/40/40031.png" stretch="aspectFit" />
-                        <Label color="white" fontSize="13" class="drawer-item" text="Mis Configuraciones"/>
-                    </FlexboxLayout>
-                </StackLayout>
-
-                <FlexboxLayout row="1" justifyContent="center" alignItems="center">
-                    <Label color="#43809D" fontSize="20" fontWeight="bold" text="PetFinder" />
-                </FlexboxLayout>
-            </GridLayout> -->
+                </GridLayout>
+            <!-- Termina Navbar -->
 
             <GridLayout ~mainContent rows="*, 60">
                 <ScrollView row="0">
@@ -220,23 +223,25 @@
                         </GridLayout>
                     </WrapLayout>
                 </ScrollView>
-
-                <StackLayout row="1" orientation="horizontal">
-                    <GridLayout columns="*, *, *, *" rows="60" class="navigation">
-                        <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="0">
-                            <Image class="btn-navigation" src="http://simpleicon.com/wp-content/uploads/home-3.png" />
-                        </FlexboxLayout>
-                        <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="1">
-                            <Image class="btn-navigation" src="http://simpleicon.com/wp-content/uploads/home-3.png" />
-                        </FlexboxLayout>
-                        <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="2">
-                            <Image class="btn-navigation" src="http://simpleicon.com/wp-content/uploads/home-3.png" />
-                        </FlexboxLayout>
-                        <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="3">
-                            <Image class="btn-navigation" src="https://cdn0.iconfinder.com/data/icons/rounded-basics/24/rounded__menu-512.png" @tap="$refs.drawer.nativeView.showDrawer()" />
-                        </FlexboxLayout>
-                    </GridLayout>
-                </StackLayout>
+                
+                <!-- Inicia Footer -->
+                    <StackLayout row="1" orientation="horizontal">
+                        <GridLayout columns="*, *, *, *" rows="60" class="navigation">
+                            <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="0" @tap="goToHome">
+                                <Image class="btn-navigation" src="http://simpleicon.com/wp-content/uploads/home-3.png" />
+                            </FlexboxLayout>
+                            <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="1">
+                                <Image class="btn-navigation" src="http://simpleicon.com/wp-content/uploads/home-3.png" />
+                            </FlexboxLayout>
+                            <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="2">
+                                <Image class="btn-navigation" src="http://simpleicon.com/wp-content/uploads/home-3.png" />
+                            </FlexboxLayout>
+                            <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="3">
+                                <Image class="btn-navigation" src="https://cdn0.iconfinder.com/data/icons/rounded-basics/24/rounded__menu-512.png" @tap="$refs.drawer.nativeView.showDrawer()" />
+                            </FlexboxLayout>
+                        </GridLayout>
+                    </StackLayout>
+                <!-- Termina Footer -->
             </GridLayout>
         </RadSideDrawer>
     </Page>
@@ -249,15 +254,15 @@ const firebase = require("nativescript-plugin-firebase")
 //Vuex
 import { mapState } from 'vuex'
 
-//Drawer
-import Navbar from './shared/Navbar'
-
+//Pages
+import AddPet from './user/AddPet.vue'
+import Home from './Home.vue'
 
 export default {
     name: 'Home',
 
     components: {
-        Navbar,
+
     },
 
     data() {
@@ -277,5 +282,40 @@ export default {
             return title
         }
     },
+
+    methods: {
+        //Router
+        goToHome(){
+            this.$navigateTo(Home, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
+        },
+
+        goToAddPet(){
+            this.$navigateTo(AddPet, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
+        }
+    }
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

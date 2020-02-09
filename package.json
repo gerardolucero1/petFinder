@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@vue/devtools": "^5.3.3",
+    "nativescript-drop-down": "^5.0.4",
     "nativescript-plugin-firebase": "^10.3.3",
     "nativescript-socketio": "^3.3.1",
     "nativescript-toasty": "^1.4.0",

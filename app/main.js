@@ -1,10 +1,11 @@
 import Vue from 'nativescript-vue'
 import App from './components/App'
+import Index from './components/Index'
 
 import VueDevtools from 'nativescript-vue-devtools'
 import store from './store'
 
-Vue.use(VueDevtools, { host: '192.168.0.6' })
+Vue.use(VueDevtools, { host: '192.168.0.4' })
 
 var firebase = require("nativescript-plugin-firebase")
 
@@ -36,6 +37,8 @@ Vue.registerElement(
   'RadSideDrawer',
   () => require('nativescript-ui-sidedrawer').RadSideDrawer
 )
+
+Vue.registerElement('DropDown', () => require('nativescript-drop-down/drop-down').DropDown)
 
 new Vue({
   store,
