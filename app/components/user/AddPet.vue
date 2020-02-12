@@ -154,15 +154,144 @@
                     <GridLayout v-if="view == 1" rows="200, *, 60">
                         <StackLayout row="0" padding="10">
                             <Label horizontalAlignment="center" fontSize="20" fontWeight="bold" text="Raza de tu mascota" />
-                            <ListPicker v-if="listBreeds.length != 0" fontSize="18" width="100%" :items="listBreeds" @selectedIndexChange="selectedPetChange($event)" />
+                            <ListPicker v-if="listBreeds.length != 0" fontSize="18" width="100%" :items="listBreeds" @selectedIndexChange="selectedBreedChange($event)" />
                         </StackLayout>
 
                         <StackLayout row="1">
-                            <Image :src="imagePet" stretch="aspectFit" />
+                            <Image :src="imageBreed" stretch="aspectFit" />
                         </StackLayout>
 
                         <FlexboxLayout row="2" justifyContent="center" alignItems="center">
+                            <Button color="white" width="150" backgroundColor="#3C495E" text="Regresar" @tap="nextView(0)" />
                             <Button color="white" width="150" backgroundColor="#51AE81" text="Continuar" @tap="nextView(2)" />
+                        </FlexboxLayout>
+                    </GridLayout>
+
+                    <!-- Eleccion edad de mascota -->
+                    <GridLayout v-if="view == 2" rows="200, *, 60">
+                        <StackLayout row="0" padding="10">
+                            <Label horizontalAlignment="center" fontSize="20" fontWeight="bold" text="Edad de tu mascota" />
+                            <DatePicker width="100%" v-model="selectedDate" :minDate="minDatePicker" :maxDate="maxDatePicker" />
+                        </StackLayout>
+                        
+                        <FlexboxLayout row="1" justifyContent="center" alignItems="center" flexDirection="column">
+                            <Label fontSize="22" :text="selectedPet.name" />
+                            <Label fontSize="16" marginTop="10" :text="selectedBreed" />
+                        </FlexboxLayout>
+
+                        <FlexboxLayout row="2" justifyContent="center" alignItems="center">
+                            <Button color="white" width="150" backgroundColor="#3C495E" text="Regresar" @tap="nextView(1)" />
+                            <Button color="white" width="150" backgroundColor="#51AE81" text="Continuar" @tap="nextView(3)" />
+                        </FlexboxLayout>
+                    </GridLayout>
+
+                    <!-- Eleccion color de mascota -->
+                    <GridLayout v-if="view == 3" rows="*, 60">
+                        <StackLayout row="0" padding="10">
+                            <Label horizontalAlignment="center" fontSize="20" fontWeight="bold" text="Color de tu mascota" />
+
+                            <Label horizontalAlignment="center" fontSize="16" marginTop="20" text="Color primario" />
+                            <ListPicker v-if="listColorPets.length != 0" fontSize="18" width="100%" :items="listColorPets" v-model="firstColorPet" />
+
+                            <Label horizontalAlignment="center" fontSize="16" marginTop="20" text="Color secundario" />
+                            <ListPicker v-if="listColorPets.length != 0" fontSize="18" width="100%" :items="listColorPets" v-model="secondColorPet" />
+                        </StackLayout>
+                        
+
+                        <FlexboxLayout row="2" justifyContent="center" alignItems="center">
+                            <Button color="white" width="150" backgroundColor="#3C495E" text="Regresar" @tap="nextView(2)" />
+                            <Button color="white" width="150" backgroundColor="#51AE81" text="Continuar" @tap="nextView(4)" />
+                        </FlexboxLayout>
+                    </GridLayout>
+
+                    <!-- Caracteristicas de mascota -->
+                    <GridLayout v-if="view == 4" rows="200, *, 60">
+                        <StackLayout row="0" padding="10">
+                            <Label horizontalAlignment="center" fontSize="20" fontWeight="bold" text="Caracteristicas de tu mascota" />
+
+                            <TextField marginTop="10" width="100" textAlign="center" keyboardType="number" v-model="numberFeatures" />
+                            <Button color="white" width="150" backgroundColor="#3C495E" text="+" @tap="addFeature" />
+                        </StackLayout>
+                        
+                        <FlexboxLayout row="1" justifyContent="center" alignItems="center" flexDirection="column">
+                            <GridLayout rows="60, *">
+                                <StackLayout row="0">
+                                    <label fontSize="13" marginBottom="10" textAlignment="center" text="Ingresa las caracteristicas de tu mascota, intenta ser lo mas breve posible, hasta un maximo de 5" textWrap="true" />
+                                </StackLayout>
+
+                                <ScrollView row="1">
+                                    <WrapLayout>
+                                        <FlexboxLayout width="100%" justifyContent="center" alignItems="center" v-for="(item, index) in features" :key="index">
+                                            <label  :text="item.number" />
+                                            <TextField marginLeft="10" width="250" v-model="item.text" />
+                                        </FlexboxLayout>
+                                    </WrapLayout>
+                                </ScrollView>
+                            </GridLayout>
+                            
+                        </FlexboxLayout>
+
+                        <FlexboxLayout row="2" justifyContent="center" alignItems="center">
+                            <Button color="white" width="150" backgroundColor="#3C495E" text="Regresar" @tap="nextView(3)" />
+                            <Button color="white" width="150" backgroundColor="#51AE81" text="Continuar" @tap="nextView(5)" />
+                        </FlexboxLayout>
+                    </GridLayout>
+
+                    <!-- Nombre de mascota -->
+                    <GridLayout v-if="view == 5" rows="*, 60">
+                        <StackLayout row="0" padding="10">
+                            <Label horizontalAlignment="center" fontSize="20" fontWeight="bold" textWrap="true" textAlignment="center" text="Por ultimo, dinos el nombre de tu mascota" />
+                            <TextField width="250" marginTop="20" v-model="namePet" />
+                        </StackLayout>
+                        
+
+                        <FlexboxLayout row="2" justifyContent="center" alignItems="center">
+                            <Button color="white" width="150" backgroundColor="#3C495E" text="Regresar" @tap="nextView(4)" />
+                            <Button color="white" width="150" backgroundColor="#51AE81" text="Continuar" @tap="nextView(6)" />
+                        </FlexboxLayout>
+                    </GridLayout>
+
+                    <!-- Resumen de mascota -->
+                    <GridLayout v-if="view == 6" rows="80, *, 60">
+                        <StackLayout row="0" padding="10">
+                            <Label horizontalAlignment="center" fontSize="20" fontWeight="bold" textWrap="true" textAlignment="center" :text="'Este es el resumen de ' + namePet + ' ¿Es correcto?'" />
+                        </StackLayout>
+                        
+                        <ScrollView row="1">
+                            <WrapLayout>
+                                <StackLayout marginTop="10" marginLeft="50" orientation="horizontal">
+                                    <Label fontSize="17" fontWeight="bold" text="Tipo de mascota: " />
+                                    <Label fontSize="17" :text="selectedPet.name" />
+                                </StackLayout>
+                                <StackLayout marginTop="10" marginLeft="50" orientation="horizontal">
+                                    <Label fontSize="17" fontWeight="bold" text="Raza de tu mascota: " />
+                                    <Label fontSize="17" :text="selectedBreed" />
+                                </StackLayout>
+                                <StackLayout marginTop="10" marginLeft="50" orientation="horizontal">
+                                    <Label fontSize="17" fontWeight="bold" text="Fecha de cumpleaños: " />
+                                    <Label fontSize="17" :text="selectedDate | formatDate" />
+                                </StackLayout>
+                                <StackLayout marginTop="10" marginLeft="50" orientation="horizontal">
+                                    <Label fontSize="17" fontWeight="bold" text="Color primario: " />
+                                    <Label fontSize="17" :text="firstColorPet" />
+                                </StackLayout>
+                                <StackLayout marginTop="10" marginLeft="50" orientation="horizontal">
+                                    <Label fontSize="17" fontWeight="bold" text="Color secundario: " />
+                                    <Label fontSize="17" :text="secondColorPet" />
+                                </StackLayout>
+                                <StackLayout marginTop="10" marginLeft="50" orientation="horizontal">
+                                    <Label fontSize="17" fontWeight="bold" text="Lista de caracteristicas: " />
+                                </StackLayout>
+                                <StackLayout marginTop="10" marginLeft="60" orientation="horizontal" v-for="(item, index) in features" :key="index">
+                                    <Label fontSize="10" marginTop="5" text="◆ " />
+                                    <Label fontSize="17" :text="item.text" />
+                                </StackLayout>
+                            </WrapLayout>
+                        </ScrollView>
+
+                        <FlexboxLayout row="2" justifyContent="center" alignItems="center">
+                            <Button color="white" width="150" backgroundColor="#3C495E" text="Regresar" @tap="nextView(5)" />
+                            <Button color="white" width="150" backgroundColor="#51AE81" text="Continuar" @tap="nextView(7)" />
                         </FlexboxLayout>
                     </GridLayout>
                     
@@ -212,11 +341,37 @@ export default {
     data() {
         return {
             view: 0,
+
+            //Tipo mascota
             selectedPet: 0,
             listNamePets: [],
             listPets: [],
             imagePet: '',
+
+            //Raza
+            selectedBreed: '',
+            imageBreed: '',
             listBreeds: [],
+
+            //Edad
+            selectedDate: '',
+
+            //Color
+            listColorPets: ['Cafe', 'Negro', 'Blanco', 'Cobre', 'Gris'],
+            firstColorPet: '',
+            secondColorPet: '',
+
+            //Caracteristicas
+            features: [],
+            numberFeatures: 0,
+            feature: {
+                number: '',
+                text: ''
+            },
+
+            //Nombre
+            namePet: '',
+
         }
     },
 
@@ -233,6 +388,20 @@ export default {
             let title = 'PetFinder'
 
             return title
+        },
+
+        minDatePicker(){
+            return new Date(1995, 0, 1)
+        },
+
+        maxDatePicker(){
+            return new Date()
+        }
+    },
+
+    filter: {
+        formatDate(args){
+            return args
         }
     },
 
@@ -261,8 +430,19 @@ export default {
             this.getPetImage()
         },
 
+        selectedBreedChange(args){
+            this.selectedBreed = this.listBreeds[args.value]
+            this.getBreedImage()
+        },
+
         nextView(args){
             switch(args) {
+                case 0:
+                    console.log(args)
+                    this.view = args
+                    this.selectedBreed = ''
+                    this.imageBreed = ''
+                    break;
                 case 1:
                     console.log(args)
                     this.view = args
@@ -270,7 +450,26 @@ export default {
                     break;
                 case 2:
                     console.log(args)
-                    // code block
+                    this.view = args
+                    break;
+                case 3:
+                    console.log(args)
+                    this.view = args
+                    break;
+                case 4:
+                    console.log(args)
+                    this.view = args
+                    break;
+                case 5:
+                    console.log(args)
+                    this.view = args
+                    break;
+                case 6:
+                    console.log(args)
+                    this.view = args
+                    break;
+                case 7:
+                    alert('Mascota guardada')
                     break;
                 default:
                     console.log(args)
@@ -312,7 +511,22 @@ export default {
                                                         .doc(this.selectedPet.id)
                                                         .get()
                 if(response.exists){
+                    console.log(response.data())
                     this.imagePet = response.data().image
+                }
+            }
+            catch(e){
+                console.log(e)
+            }
+        },
+
+        async getBreedImage(){
+            try{
+                let response = await firebase.firestore.collection('images_type_breeds')
+                                                        .doc(this.selectedBreed)
+                                                        .get()
+                if(response.exists){
+                    this.imageBreed = response.data().image
                 }
             }
             catch(e){
@@ -333,6 +547,27 @@ export default {
             catch(e){
                 console.log(e)
             }
+        },
+
+        addFeature(){
+            if(this.numberFeatures > 5){
+                return
+            }
+
+            this.features = []
+
+            let control = 0;
+            while(control < this.numberFeatures){
+                let feature = JSON.parse( JSON.stringify(this.feature) );
+                feature = {
+                    number: control + 1,
+                    text: '',
+                }
+                this.features.push(feature);
+                control++;
+            }
+
+            this.numberFeatures = '';
         }
     }
 }
