@@ -18,7 +18,7 @@
         background-color: white;
         border-width: 1 0 0 0;
         border-color: rgba(218, 218, 218, 1);
-        border-radius: 0;
+        border-radius: 20 20 0 0;
     }
 
     /*Estilos Navbar*/
@@ -75,10 +75,14 @@
         width: 100%;
     }
 
+    .active{
+        background-color: #F8F8F8;
+    }
+
 </style>
 
 <template>
-    <Page>
+    <Page actionBarHidden="true">
         <ActionBar>
             <StackLayout orientation="horizontal"
                 ios:horizontalAlignment="center"
@@ -89,50 +93,10 @@
 
         <RadSideDrawer ref="drawer">
             <!-- Inicia Navbar -->
-                <GridLayout class="drawer-body" ~drawerContent rows="*, 60">
-                    <StackLayout row="0">
-                        <FlexboxLayout height="200" justifyContent="center" alignItems="center" flexDirection="column">
-                            <Image width="70" borderRadius="100" src="http://i2.wp.com/www.kpopscene.com/wp-content/uploads/2016/05/chaewon-april-04.jpg" />
-
-                            <Label color="white" :text="user.name" fontWeight="bold" fontSize="15" />
-                            <Label color="#5FA5C4" :text="user.email" fontWeight="bold" fontSize="12" />
-                        </FlexboxLayout>
-
-                        <FlexboxLayout class="drawer-item-container" justifyContent="flex-start" alignItems="center">
-                            <Image width="20" src="https://image.flaticon.com/icons/png/512/64/64572.png" stretch="aspectFit" />
-                            <Label color="white" fontSize="13" class="drawer-item" text="Mi Perfil"/>
-                        </FlexboxLayout>
-
-                        <FlexboxLayout class="drawer-item-container" marginTop="20" justifyContent="flex-start" alignItems="center">
-                            <Image width="20" src="https://image.flaticon.com/icons/png/512/30/30571.png" stretch="aspectFit" />
-                            <Label color="white" fontSize="13" class="drawer-item" text="Mis Matchs"/>
-                        </FlexboxLayout>
-
-                        <FlexboxLayout class="drawer-item-container" marginTop="20" justifyContent="flex-start" alignItems="center">
-                            <Image width="20" src="https://www.pngrepo.com/download/165203/online-store-shopping-cart.png" stretch="aspectFit" />
-                            <Label color="white" fontSize="13" class="drawer-item" text="Mi Tienda"/>
-                        </FlexboxLayout>
-
-                        <StackLayout class="line" marginTop="20" />
-
-                        <FlexboxLayout class="drawer-item-container" marginTop="20" justifyContent="flex-start" alignItems="center">
-                            <Image width="20" src="https://icons-for-free.com/iconfiles/png/512/new+plus+icon-1320196808672578110.png" stretch="aspectFit" />
-                            <Label color="white" fontSize="13" class="drawer-item" text="Agregar Mascota"/>
-                        </FlexboxLayout>
-
-                        <FlexboxLayout class="drawer-item-container" marginTop="20" justifyContent="flex-start" alignItems="center">
-                            <Image width="20" src="https://image.flaticon.com/icons/png/512/40/40031.png" stretch="aspectFit" />
-                            <Label color="white" fontSize="13" class="drawer-item" text="Mis Configuraciones"/>
-                        </FlexboxLayout>
-                    </StackLayout>
-
-                    <FlexboxLayout row="1" justifyContent="center" alignItems="center">
-                        <Label color="#43809D" fontSize="20" fontWeight="bold" text="PetFinder" />
-                    </FlexboxLayout>
-                </GridLayout>
+                <Navbar />
             <!-- Termina Navbar -->
 
-            <GridLayout ~mainContent rows="*, 60">
+            <GridLayout ~mainContent rows="*, 60" backgroundColor="#F6F6F6">
                 <StackLayout row="0">
                     <!-- Eleccion tipo de mascota -->
                     <GridLayout v-if="view == 0" rows="200, *, 60">
@@ -167,8 +131,31 @@
                         </FlexboxLayout>
                     </GridLayout>
 
+                    <!-- Eleccion sexo de mascota -->
+                    <GridLayout v-if="view == 2" rows="100, *, 60">
+                        <StackLayout row="0" padding="10">
+                            <Label horizontalAlignment="center" fontSize="20" fontWeight="bold" text="Sexo de tu mascota" />
+                        </StackLayout>
+
+                        <GridLayout row="1" columns="*, *" >
+                            <StackLayout v-bind:class="[sexo == 'Macho' ? activeClass : '']" horizontalAlignment="center" verticalAlignment="center" row="0" col="0" height="50%" @tap="changeSex('Macho')">
+                                <Image width="150" src="https://cdn.icon-icons.com/icons2/1898/PNG/512/male_121077.png" stretch="aspectFit" />
+                                <Label fontSize="19" horizontalAlignment="center" text="Macho" />
+                            </StackLayout>
+                            <StackLayout v-bind:class="[sexo == 'Hembra' ? activeClass : '']" horizontalAlignment="center" verticalAlignment="center" row="0" col="1" height="50%" @tap="changeSex('Hembra')">
+                                <Image width="150" src="https://cdn.icon-icons.com/icons2/1898/PNG/512/female_121037.png" stretch="aspectFit" />
+                                <Label fontSize="19" horizontalAlignment="center" text="Hembra" />
+                            </StackLayout>
+                        </GridLayout>
+
+                        <FlexboxLayout row="2" justifyContent="center" alignItems="center">
+                            <Button color="white" width="150" backgroundColor="#3C495E" text="Regresar" @tap="nextView(1)" />
+                            <Button color="white" width="150" backgroundColor="#51AE81" text="Continuar" @tap="nextView(3)" />
+                        </FlexboxLayout>
+                    </GridLayout>
+
                     <!-- Eleccion edad de mascota -->
-                    <GridLayout v-if="view == 2" rows="200, *, 60">
+                    <GridLayout v-if="view == 3" rows="200, *, 60">
                         <StackLayout row="0" padding="10">
                             <Label horizontalAlignment="center" fontSize="20" fontWeight="bold" text="Edad de tu mascota" />
                             <DatePicker width="100%" v-model="selectedDate" :minDate="minDatePicker" :maxDate="maxDatePicker" />
@@ -180,32 +167,32 @@
                         </FlexboxLayout>
 
                         <FlexboxLayout row="2" justifyContent="center" alignItems="center">
-                            <Button color="white" width="150" backgroundColor="#3C495E" text="Regresar" @tap="nextView(1)" />
-                            <Button color="white" width="150" backgroundColor="#51AE81" text="Continuar" @tap="nextView(3)" />
-                        </FlexboxLayout>
-                    </GridLayout>
-
-                    <!-- Eleccion color de mascota -->
-                    <GridLayout v-if="view == 3" rows="*, 60">
-                        <StackLayout row="0" padding="10">
-                            <Label horizontalAlignment="center" fontSize="20" fontWeight="bold" text="Color de tu mascota" />
-
-                            <Label horizontalAlignment="center" fontSize="16" marginTop="20" text="Color primario" />
-                            <ListPicker v-if="listColorPets.length != 0" fontSize="18" width="100%" :items="listColorPets" v-model="firstColorPet" />
-
-                            <Label horizontalAlignment="center" fontSize="16" marginTop="20" text="Color secundario" />
-                            <ListPicker v-if="listColorPets.length != 0" fontSize="18" width="100%" :items="listColorPets" v-model="secondColorPet" />
-                        </StackLayout>
-                        
-
-                        <FlexboxLayout row="2" justifyContent="center" alignItems="center">
                             <Button color="white" width="150" backgroundColor="#3C495E" text="Regresar" @tap="nextView(2)" />
                             <Button color="white" width="150" backgroundColor="#51AE81" text="Continuar" @tap="nextView(4)" />
                         </FlexboxLayout>
                     </GridLayout>
 
+                    <!-- Eleccion color de mascota -->
+                    <GridLayout v-if="view == 4" rows="*, 60">
+                        <StackLayout row="0" padding="10">
+                            <Label horizontalAlignment="center" fontSize="20" fontWeight="bold" text="Color de tu mascota" />
+
+                            <Label horizontalAlignment="center" fontSize="16" marginTop="20" text="Color primario" />
+                            <ListPicker v-if="listColorPets.length != 0" fontSize="18" width="100%" :items="listColorPets" @selectedIndexChange="selectedColorOneChanged($event)" />
+
+                            <Label horizontalAlignment="center" fontSize="16" marginTop="20" text="Color secundario" />
+                            <ListPicker v-if="listColorPets.length != 0" fontSize="18" width="100%" :items="listColorPets" @selectedIndexChange="selectedColorTwoChanged($event)" />
+                        </StackLayout>
+                        
+
+                        <FlexboxLayout row="2" justifyContent="center" alignItems="center">
+                            <Button color="white" width="150" backgroundColor="#3C495E" text="Regresar" @tap="nextView(3)" />
+                            <Button color="white" width="150" backgroundColor="#51AE81" text="Continuar" @tap="nextView(5)" />
+                        </FlexboxLayout>
+                    </GridLayout>
+
                     <!-- Caracteristicas de mascota -->
-                    <GridLayout v-if="view == 4" rows="200, *, 60">
+                    <GridLayout v-if="view == 5" rows="200, *, 60">
                         <StackLayout row="0" padding="10">
                             <Label horizontalAlignment="center" fontSize="20" fontWeight="bold" text="Caracteristicas de tu mascota" />
 
@@ -232,27 +219,61 @@
                         </FlexboxLayout>
 
                         <FlexboxLayout row="2" justifyContent="center" alignItems="center">
-                            <Button color="white" width="150" backgroundColor="#3C495E" text="Regresar" @tap="nextView(3)" />
-                            <Button color="white" width="150" backgroundColor="#51AE81" text="Continuar" @tap="nextView(5)" />
-                        </FlexboxLayout>
-                    </GridLayout>
-
-                    <!-- Nombre de mascota -->
-                    <GridLayout v-if="view == 5" rows="*, 60">
-                        <StackLayout row="0" padding="10">
-                            <Label horizontalAlignment="center" fontSize="20" fontWeight="bold" textWrap="true" textAlignment="center" text="Por ultimo, dinos el nombre de tu mascota" />
-                            <TextField width="250" marginTop="20" v-model="namePet" />
-                        </StackLayout>
-                        
-
-                        <FlexboxLayout row="2" justifyContent="center" alignItems="center">
                             <Button color="white" width="150" backgroundColor="#3C495E" text="Regresar" @tap="nextView(4)" />
                             <Button color="white" width="150" backgroundColor="#51AE81" text="Continuar" @tap="nextView(6)" />
                         </FlexboxLayout>
                     </GridLayout>
 
+                    <!-- Eleccion fotos de mascota -->
+                    <GridLayout v-if="view == 6" rows="50, *, 60">
+                        <StackLayout row="0" padding="10">
+                            <Label horizontalAlignment="center" fontSize="20" fontWeight="bold" text="Fotos de tu mascota" />
+                        </StackLayout>
+                        
+                        <GridLayout row="1" columns="*" rows="50, *, 100">
+                            <FlexboxLayout row="0" justifyContent="space-around" alignItems="center" marginTop="20">
+                                <Image width="20" src="https://cdn.icon-icons.com/icons2/906/PNG/512/left-arrow-7_icon-icons.com_70077.png" stretch="aspectFit" @tap="nextPhoto(0)" />
+
+                                <Label fontSize="20" horizontalAlignment="center" :text="photo + '/3'" />
+
+                                <Image width="20" src="https://cdn.icon-icons.com/icons2/906/PNG/512/right-arrow-7_icon-icons.com_69946.png" stretch="aspectFit" @tap="nextPhoto(1)" />
+                            </FlexboxLayout>
+
+                            <StackLayout row="1">
+                                <Image v-if="photo == 1" :src="photoOne" stretch="aspectFit" />
+                                <Image v-if="photo == 2" :src="photoTwo" stretch="aspectFit" />
+                                <Image v-if="photo == 3" :src="photoThree" stretch="aspectFit" />
+                            </StackLayout>
+
+                            <FlexboxLayout row="2" justifyContent="space-around" alignItems="center">
+                                <Image width="60" src="http://getdrawings.com/free-icon/png-camera-icon-55.png" stretch="aspectFit" @tap="takePicture" />
+                                <Image width="60" src="https://image.flaticon.com/icons/png/512/1590/1590898.png" stretch="aspectFit" @tap="openGallery" />
+                            </FlexboxLayout>
+                        </GridLayout>
+
+                        <FlexboxLayout row="2" justifyContent="center" alignItems="center">
+                            <Button color="white" width="150" backgroundColor="#3C495E" text="Regresar" @tap="nextView(5)" />
+                            <Button color="white" width="150" backgroundColor="#51AE81" text="Continuar" @tap="nextView(7)" />
+                        </FlexboxLayout>
+                    </GridLayout>
+
+                    <!-- Nombre de mascota -->
+                    <GridLayout v-if="view == 7" rows="*, 60">
+                        <StackLayout row="0" padding="10">
+                            <Label horizontalAlignment="center" fontSize="20" fontWeight="bold" textWrap="true" textAlignment="center" text="Por ultimo, dinos el nombre de tu mascota" />
+                            <TextField width="250" marginTop="20" v-model="namePet" hint="Nombre" maxLength="20" />
+
+                            <TextView marginTop="20" v-model="description" hint="Ingresa una descripcion" maxLength="200" />
+                        </StackLayout>
+
+                        <FlexboxLayout row="2" justifyContent="center" alignItems="center">
+                            <Button color="white" width="150" backgroundColor="#3C495E" text="Regresar" @tap="nextView(6)" />
+                            <Button color="white" width="150" backgroundColor="#51AE81" text="Continuar" @tap="nextView(8)" />
+                        </FlexboxLayout>
+                    </GridLayout>
+
                     <!-- Resumen de mascota -->
-                    <GridLayout v-if="view == 6" rows="80, *, 60">
+                    <GridLayout v-if="view == 8" rows="80, *, 60">
                         <StackLayout row="0" padding="10">
                             <Label horizontalAlignment="center" fontSize="20" fontWeight="bold" textWrap="true" textAlignment="center" :text="'Este es el resumen de ' + namePet + ' ¿Es correcto?'" />
                         </StackLayout>
@@ -268,8 +289,12 @@
                                     <Label fontSize="17" :text="selectedBreed" />
                                 </StackLayout>
                                 <StackLayout marginTop="10" marginLeft="50" orientation="horizontal">
+                                    <Label fontSize="17" fontWeight="bold" text="Sexo de tu mascota: " />
+                                    <Label fontSize="17" :text="sexo" />
+                                </StackLayout>
+                                <StackLayout marginTop="10" marginLeft="50" orientation="horizontal">
                                     <Label fontSize="17" fontWeight="bold" text="Fecha de cumpleaños: " />
-                                    <Label fontSize="17" :text="selectedDate | formatDate" />
+                                    <Label fontSize="17" :text="formatDate" />
                                 </StackLayout>
                                 <StackLayout marginTop="10" marginLeft="50" orientation="horizontal">
                                     <Label fontSize="17" fontWeight="bold" text="Color primario: " />
@@ -279,19 +304,21 @@
                                     <Label fontSize="17" fontWeight="bold" text="Color secundario: " />
                                     <Label fontSize="17" :text="secondColorPet" />
                                 </StackLayout>
-                                <StackLayout marginTop="10" marginLeft="50" orientation="horizontal">
+                                <StackLayout marginTop="10" marginLeft="50">
                                     <Label fontSize="17" fontWeight="bold" text="Lista de caracteristicas: " />
+                                    <Label fontSize="15" v-for="(item, index) in features" :key="index" :text="'* ' + item.text" />
                                 </StackLayout>
-                                <StackLayout marginTop="10" marginLeft="60" orientation="horizontal" v-for="(item, index) in features" :key="index">
-                                    <Label fontSize="10" marginTop="5" text="◆ " />
-                                    <Label fontSize="17" :text="item.text" />
-                                </StackLayout>
+                                <GridLayout marginTop="10" rows="300" columns="*, *, *">
+                                    <Image row="0" col="0" :src="photoOne" stretch="aspectFit" />
+                                    <Image row="0" col="1" :src="photoTwo" stretch="aspectFit" />
+                                    <Image row="0" col="2" :src="photoThree" stretch="aspectFit" />
+                                </GridLayout>
                             </WrapLayout>
                         </ScrollView>
 
                         <FlexboxLayout row="2" justifyContent="center" alignItems="center">
-                            <Button color="white" width="150" backgroundColor="#3C495E" text="Regresar" @tap="nextView(5)" />
-                            <Button color="white" width="150" backgroundColor="#51AE81" text="Continuar" @tap="nextView(7)" />
+                            <Button color="white" width="150" backgroundColor="#3C495E" text="Regresar" @tap="nextView(7)" />
+                            <Button color="white" width="150" backgroundColor="#51AE81" text="Continuar" @tap="nextView(9)" />
                         </FlexboxLayout>
                     </GridLayout>
                     
@@ -299,20 +326,7 @@
                 
                 <!-- Inicia Footer -->
                 <StackLayout row="1" orientation="horizontal">
-                    <GridLayout columns="*, *, *, *" rows="60" class="navigation">
-                        <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="0" @tap="goToHome">
-                            <Image class="btn-navigation" src="http://simpleicon.com/wp-content/uploads/home-3.png" />
-                        </FlexboxLayout>
-                        <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="1">
-                            <Image class="btn-navigation" src="http://simpleicon.com/wp-content/uploads/home-3.png" />
-                        </FlexboxLayout>
-                        <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="2">
-                            <Image class="btn-navigation" src="http://simpleicon.com/wp-content/uploads/home-3.png" />
-                        </FlexboxLayout>
-                        <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="3">
-                            <Image class="btn-navigation" src="https://cdn0.iconfinder.com/data/icons/rounded-basics/24/rounded__menu-512.png" @tap="$refs.drawer.nativeView.showDrawer()" />
-                        </FlexboxLayout>
-                    </GridLayout>
+                    <Footer @sideDrawer="$refs.drawer.nativeView.showDrawer()" />
                 </StackLayout>
                 <!-- Termina Footer -->
             </GridLayout>
@@ -327,9 +341,46 @@ const firebase = require("nativescript-plugin-firebase")
 //Vuex
 import { mapState } from 'vuex'
 
-//Pages
-import AddPet from './AddPet.vue'
-import Home from '../Home.vue'
+//MOMENT
+const moment = require('moment')
+
+//CAMERA
+const camera = require("nativescript-camera");
+const imageModule = require("tns-core-modules/ui/image")
+
+//GALLERY
+const imagePicker = require("nativescript-imagepicker")
+const context = imagePicker.create({ mode: "single" })
+
+//LOADER
+const LoadingIndicator = require('@nstudio/nativescript-loading-indicator').LoadingIndicator;
+const Mode = require('@nstudio/nativescript-loading-indicator').Mode;
+const loader = new LoadingIndicator();
+
+const options = {
+    message: 'Cargando...',
+    details: 'Esperando respuesta',
+    progress: 0.65,
+    margin: 10,
+    dimBackground: true,
+    color: '#51AE81', // color of indicator and labels
+    // background box around indicator
+    // hideBezel will override this if true
+    backgroundColor: 'white',
+    userInteractionEnabled: false, // default true. Set false so that the touches will fall through it.
+    hideBezel: true, // default false, can hide the surrounding bezel
+    mode: Mode.Indeterminate, // see options below
+    // android: {
+    //     view: android.view.View, // Target view to show on top of (Defaults to entire window)
+    //     cancelable: true,
+    //     cancelListener: function(dialog) {
+    //         console.log('Loading cancelled');
+    //     }
+    // },
+    // ios: {
+    //     view: UIView // Target view to show on top of (Defaults to entire window)
+    // }
+};
 
 export default {
     name: 'AddPet',
@@ -341,6 +392,8 @@ export default {
     data() {
         return {
             view: 0,
+            activeClass: 'active',
+            permissions: false,
 
             //Tipo mascota
             selectedPet: 0,
@@ -352,6 +405,9 @@ export default {
             selectedBreed: '',
             imageBreed: '',
             listBreeds: [],
+
+            //SEXO
+            sexo: 'Macho',
 
             //Edad
             selectedDate: '',
@@ -369,13 +425,25 @@ export default {
                 text: ''
             },
 
-            //Nombre
+            //Fotos
+            photo: 1,
+            photoOne: '',
+            photoTwo: '',
+            photoThree: '',
+
+            //Nombre y descripcion
             namePet: '',
+            description: '',
+
+            //Guardar Mascota
+            idPet: '',
+            controlPhotos: 1,
 
         }
     },
 
     created () {
+        this.askPermissions()
         this.getTypePets()
     },
 
@@ -396,16 +464,30 @@ export default {
 
         maxDatePicker(){
             return new Date()
-        }
-    },
+        },
 
-    filter: {
-        formatDate(args){
-            return args
-        }
+        formatDate(){
+            moment.locale('es')
+            return moment(this.selectedDate).format('L')
+        },
+
     },
 
     methods: {
+        //Permisos
+        askPermissions(){
+            camera.requestPermissions().then(
+                function success() {
+                    console.log('Permisos aceptados')
+                    this.permissions = true
+                }, 
+                function failure() {
+                    console.log('Permisos no aceptados')
+                    this.permissions = false
+                }
+            );
+        },
+
         //Router
         goToHome(){
             this.$navigateTo(Home, {
@@ -425,6 +507,15 @@ export default {
             })
         },
 
+        goToProfile(){
+            this.$navigateTo(Profile, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
+        },
+
         selectedPetChange(args){
             this.selectedPet = this.listPets[args.value]
             this.getPetImage()
@@ -433,6 +524,18 @@ export default {
         selectedBreedChange(args){
             this.selectedBreed = this.listBreeds[args.value]
             this.getBreedImage()
+        },
+
+        selectedColorOneChanged(args){
+            this.firstColorPet = this.listColorPets[args.value]
+        },
+
+        selectedColorTwoChanged(args){
+            this.secondColorPet = this.listColorPets[args.value]
+        },
+
+        changeSex(args){
+            this.sexo = args
         },
 
         nextView(args){
@@ -469,7 +572,18 @@ export default {
                     this.view = args
                     break;
                 case 7:
-                    alert('Mascota guardada')
+                    console.log(args)
+                    this.view = args
+                    break;
+                case 8:
+                    console.log(args)
+                    this.view = args
+                    break;
+                case 9:
+                    if(this.controlPhotos == 4){
+                        return
+                    }
+                    this.savePet()
                     break;
                 default:
                     console.log(args)
@@ -479,8 +593,74 @@ export default {
 
         },
 
-        demo(){
-            console.log('Hola mundo')
+        //Tomar las fotos
+        takePicture(){
+            const options = {
+                width: 300,
+                height: 300,
+                keepAspectRatio: false,
+                saveToGallery: true
+            }
+
+            camera.takePicture(options).then((response) => {
+                console.log('Resultado...')
+
+                let image = new imageModule.Image()
+                image.src = response
+                if(this.photo == 1){
+                    this.photoOne = image.src._android
+                }else if(this.photo == 2){
+                    this.photoTwo = image.src._android
+                }else{
+                    this.photoThree = image.src._android
+                }
+                
+            }).catch((error) => {
+                console.log('Error: ' + error.message)
+            })
+        },
+
+        //Abrir galeria
+        openGallery(){
+            context
+                .authorize()
+                .then(() => {
+                    return context.present();
+                })
+                .then((selection) => {
+                    // selection.forEach((selected) => {
+                    //     // process the selected image
+                    // });
+                    let image = new imageModule.Image()
+                    image.src = selection
+                    if(this.photo == 1){
+                        this.photoOne = image.src[0]._android
+                    }else if(this.photo == 2){
+                        this.photoTwo = image.src[0]._android
+                    }else{
+                        this.photoThree = image.src[0]._android
+                    }
+                    
+                }).catch((e) => {
+                    // process error
+                    console.log(e)
+                })
+        },
+
+        nextPhoto(args){
+            if(args == 1){
+                if(this.photo == 3){
+                    return
+                }else{
+                   this.photo ++ 
+                }
+            }else{
+                if(this.photo == 1){
+                    return
+                }else{
+                    this.photo --
+                }
+            }
         },
 
         //Firebase
@@ -568,6 +748,135 @@ export default {
             }
 
             this.numberFeatures = '';
+        },
+
+        async savePet(){
+            try{
+                //Cargamos la pantalla de espera
+                loader.show(options)
+
+                let pet = {
+                    name: this.namePet,
+                    sex: this.sexo,
+                    user: this.user.uid,
+                    firstColor: this.firstColorPet,
+                    secondColor: this.secondColorPet,
+                    features: this.features,
+                    type: this.selectedPet.name,
+                    breed: this.selectedBreed,
+                    birthdate: this.selectedDate,
+                    description: this.description,
+                    status: 1,
+                }
+                let response = await firebase.firestore.collection('pets').add(pet)
+                this.idPet = response.id
+
+                if(response){
+                    this.controlUploadPhotos()
+                }
+            }
+            catch(e){
+
+            }
+        },
+
+        controlUploadPhotos(){
+            if(this.controlPhotos == 1){
+                if(this.photoOne !== ''){
+                    this.controlPhotos++
+                    this.savePetPhotos(this.photoOne)
+                }else{
+                    this.controlPhotos++
+                    this.photoOne = 'https://i.redd.it/s8lk86v3r2m11.png'
+                    this.savePetPhotos(this.photoOne)
+                }
+            }else if(this.controlPhotos == 2){
+                if(this.photoTwo !== ''){
+                    this.controlPhotos++
+                    this.savePetPhotos(this.photoTwo)
+                }else{
+                    this.controlPhotos++
+                    this.photoTwo = 'https://i.redd.it/s8lk86v3r2m11.png'
+                    this.savePetPhotos(this.photoTwo)
+                }
+            }else if(this.controlPhotos == 3){
+                if(this.photoThree !== ''){
+                    this.controlPhotos++
+                    this.savePetPhotos(this.photoThree)
+                }else{
+                    this.controlPhotos++
+                    this.photoThree = 'https://i.redd.it/s8lk86v3r2m11.png'
+                    this.savePetPhotos(this.photoThree)
+                }
+            }else if(this.controlPhotos == 4){
+                loader.hide()
+                this.goToHome()
+                return
+            }
+        },
+
+        //Generar UUID
+        generateUUID(){
+            var h=['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
+            var k=['x','x','x','x','x','x','x','x','-','x','x','x','x','-','4','x','x','x','-','y','x','x','x','-','x','x','x','x','x','x','x','x','x','x','x','x'];
+            var u='',i=0,rb=Math.random()*0xffffffff|0;
+            while(i++<36) {
+                var c=k[i-1],r=rb&0xf,v=c=='x'?r:(r&0x3|0x8);
+                u+=(c=='-'||c=='4')?c:h[v];rb=i%8==0?Math.random()*0xffffffff|0:rb>>4
+            }
+            return u
+        },
+
+        //Guardar las fotos
+        async savePetPhotos(args){
+            try{
+                let metadata = {
+                    contentType: "multipart/form-data",
+                    contentLanguage: "es",
+                }
+
+                let fotoId = this.generateUUID()
+                // now upload the file with either of the options below:
+                firebase.storage.uploadFile({
+                // the full path of the file in your Firebase storage (folders will be created)
+                remoteFullPath: 'users/' + this.user.uid + '/pets/' + fotoId + '.jpg',
+                // option 2: a full file path (ignored if 'localFile' is set)
+                localFullPath: args,
+                // get notified of file upload progress
+                onProgress: (status) => {
+                    console.log("Uploaded fraction: " + status.fractionCompleted);
+                    console.log("Percentage complete: " + status.percentageCompleted);
+                },
+                metadata
+              }).then((uploadedFile) => {
+                    console.log("File uploaded: " + JSON.stringify(uploadedFile))
+                    firebase.storage.getDownloadUrl({
+                        // the full path of an existing file in your Firebase storage
+                        remoteFullPath: 'users/' + this.user.uid + '/pets/' + fotoId + '.jpg'
+                    }).then(async (url) => {
+                            let data = {
+                                image: url,
+                                pet: this.idPet 
+                            }
+
+                            let response = await firebase.firestore.collection('photos_pet').add(data)
+                            if(response){
+                                this.controlUploadPhotos()
+                            }
+                        },
+                        (error) => {
+                            console.log("Error: " + error);
+                        }
+                    );
+                },
+                    (error) => {
+                        console.log("File upload error: " + error);
+                    }
+                );
+            }
+            catch(e){
+                console.log(e)
+            }
         }
     }
 }

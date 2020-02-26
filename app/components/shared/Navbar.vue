@@ -47,29 +47,29 @@
             </FlexboxLayout>
 
             <FlexboxLayout class="drawer-item-container" justifyContent="flex-start" alignItems="center">
-                <Image width="20" src="https://image.flaticon.com/icons/png/512/64/64572.png" stretch="aspectFit" />
-                <Label color="white" fontSize="13" class="drawer-item" text="Mi Perfil"/>
+                <Label text="" textWrap="true" fontSize="18" color="black" class="font-awesome" />
+                <Label color="white" fontSize="13" class="drawer-item" text="Mi Perfil" @tap="goToProfile"/>
             </FlexboxLayout>
 
-            <FlexboxLayout class="drawer-item-container" marginTop="40" justifyContent="flex-start" alignItems="center">
-                <Image width="20" src="https://image.flaticon.com/icons/png/512/30/30571.png" stretch="aspectFit" />
+            <FlexboxLayout class="drawer-item-container" marginTop="20" justifyContent="flex-start" alignItems="center">
+                <Label text="" textWrap="true" fontSize="18" color="black" class="font-awesome" />
                 <Label color="white" fontSize="13" class="drawer-item" text="Mis Matchs"/>
             </FlexboxLayout>
 
-            <FlexboxLayout class="drawer-item-container" marginTop="40" justifyContent="flex-start" alignItems="center">
-                <Image width="20" src="https://www.pngrepo.com/download/165203/online-store-shopping-cart.png" stretch="aspectFit" />
+            <FlexboxLayout class="drawer-item-container" marginTop="20" justifyContent="flex-start" alignItems="center">
+                <Label text="" textWrap="true" fontSize="16" color="black" class="font-awesome" />
                 <Label color="white" fontSize="13" class="drawer-item" text="Mi Tienda"/>
             </FlexboxLayout>
 
-            <StackLayout class="line" marginTop="40" />
+            <StackLayout class="line" marginTop="20" />
 
-            <FlexboxLayout class="drawer-item-container" marginTop="40" justifyContent="flex-start" alignItems="center">
-                <Image width="20" src="https://icons-for-free.com/iconfiles/png/512/new+plus+icon-1320196808672578110.png" stretch="aspectFit" />
+            <FlexboxLayout class="drawer-item-container" marginTop="20" justifyContent="flex-start" alignItems="center" @tap="goToAddPet">
+                <Label text="" textWrap="true" fontSize="18" color="black" class="font-awesome" />
                 <Label color="white" fontSize="13" class="drawer-item" text="Agregar Mascota"/>
             </FlexboxLayout>
 
-            <FlexboxLayout class="drawer-item-container" marginTop="40" justifyContent="flex-start" alignItems="center">
-                <Image width="20" src="https://image.flaticon.com/icons/png/512/40/40031.png" stretch="aspectFit" />
+            <FlexboxLayout class="drawer-item-container" marginTop="20" justifyContent="flex-start" alignItems="center">
+                <Label text="" textWrap="true" fontSize="18" color="black" class="font-awesome" />
                 <Label color="white" fontSize="13" class="drawer-item" text="Mis Configuraciones"/>
             </FlexboxLayout>
         </StackLayout>
@@ -92,6 +92,7 @@ import Navbar from './Navbar.vue'
 
 //Pages
 import AddPet from '../user/AddPet.vue'
+import Profile from '../user/Profile.vue'
 
 export default {
     name: 'Navbar',
@@ -109,9 +110,23 @@ export default {
     },
 
     methods:{
-        // goToAddPet(){
-        //     this.$navigateTo(AddPet)
-        // }
+        goToAddPet(){
+            this.$navigateTo(AddPet, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
+        },
+
+        goToProfile(){
+            this.$navigateTo(Profile, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
+        },
     }
 }
 </script>

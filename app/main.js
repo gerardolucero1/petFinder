@@ -5,6 +5,10 @@ import Index from './components/Index'
 import VueDevtools from 'nativescript-vue-devtools'
 import store from './store'
 
+//Components
+import Footer from './components/shared/Footer.vue'
+import Navbar from './components/shared/Navbar.vue'
+
 Vue.use(VueDevtools, { host: '192.168.0.4' })
 
 var firebase = require("nativescript-plugin-firebase")
@@ -39,6 +43,8 @@ Vue.registerElement(
 )
 
 Vue.registerElement('DropDown', () => require('nativescript-drop-down/drop-down').DropDown)
+Vue.component('Footer', Footer)
+Vue.component('Navbar', Navbar)
 
 new Vue({
   store,

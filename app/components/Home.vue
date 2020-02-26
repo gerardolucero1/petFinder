@@ -1,4 +1,4 @@
-<style scoped>
+<style>
     ActionBar {
         background-color: #51AE81;
         color: #ffffff;
@@ -8,17 +8,6 @@
         color: white;
         font-weight: bold;
         font-size: 18px;
-    }
-
-    .navigation{
-        width: 100%;
-        height: 100%;
-        left: 0;
-        bottom: 0;
-        background-color: white;
-        border-width: 1 0 0 0;
-        border-color: rgba(218, 218, 218, 1);
-        border-radius: 0;
     }
 
     /*Estilos Navbar*/
@@ -58,11 +47,6 @@
         border-color: #1D5A7B;
     }
 
-    /*Estilos Footer*/
-    .btn-navigation{
-        width: 90px;
-    }
-
     .card{
         width: 90%;
         margin-bottom: 70px;
@@ -73,7 +57,7 @@
 </style>
 
 <template>
-    <Page>
+    <Page actionBarHidden="true">
         <ActionBar>
             <StackLayout orientation="horizontal"
                 ios:horizontalAlignment="center"
@@ -82,90 +66,61 @@
             </StackLayout>
         </ActionBar>
 
-        <RadSideDrawer ref="drawer">
+        <RadSideDrawer ref="drawer" drawerTransition="ScaleDownPusherTransition">
             <!-- Inicia Navbar -->
-                <GridLayout class="drawer-body" ~drawerContent rows="*, 60">
-                    <StackLayout row="0">
-                        <FlexboxLayout height="200" justifyContent="center" alignItems="center" flexDirection="column">
-                            <Image width="70" borderRadius="100" src="http://i2.wp.com/www.kpopscene.com/wp-content/uploads/2016/05/chaewon-april-04.jpg" />
-
-                            <Label color="white" :text="user.name" fontWeight="bold" fontSize="15" />
-                            <Label color="#5FA5C4" :text="user.email" fontWeight="bold" fontSize="12" />
-                        </FlexboxLayout>
-
-                        <FlexboxLayout class="drawer-item-container" justifyContent="flex-start" alignItems="center">
-                            <Image width="20" src="https://image.flaticon.com/icons/png/512/64/64572.png" stretch="aspectFit" />
-                            <Label color="white" fontSize="13" class="drawer-item" text="Mi Perfil"/>
-                        </FlexboxLayout>
-
-                        <FlexboxLayout class="drawer-item-container" marginTop="20" justifyContent="flex-start" alignItems="center">
-                            <Image width="20" src="https://image.flaticon.com/icons/png/512/30/30571.png" stretch="aspectFit" />
-                            <Label color="white" fontSize="13" class="drawer-item" text="Mis Matchs"/>
-                        </FlexboxLayout>
-
-                        <FlexboxLayout class="drawer-item-container" marginTop="20" justifyContent="flex-start" alignItems="center">
-                            <Image width="20" src="https://www.pngrepo.com/download/165203/online-store-shopping-cart.png" stretch="aspectFit" />
-                            <Label color="white" fontSize="13" class="drawer-item" text="Mi Tienda"/>
-                        </FlexboxLayout>
-
-                        <StackLayout class="line" marginTop="20" />
-
-                        <FlexboxLayout class="drawer-item-container" marginTop="20" justifyContent="flex-start" alignItems="center" @tap="goToAddPet">
-                            <Image width="20" src="https://icons-for-free.com/iconfiles/png/512/new+plus+icon-1320196808672578110.png" stretch="aspectFit" />
-                            <Label color="white" fontSize="13" class="drawer-item" text="Agregar Mascota"/>
-                        </FlexboxLayout>
-
-                        <FlexboxLayout class="drawer-item-container" marginTop="20" justifyContent="flex-start" alignItems="center">
-                            <Image width="20" src="https://image.flaticon.com/icons/png/512/40/40031.png" stretch="aspectFit" />
-                            <Label color="white" fontSize="13" class="drawer-item" text="Mis Configuraciones"/>
-                        </FlexboxLayout>
-                    </StackLayout>
-
-                    <FlexboxLayout row="1" justifyContent="center" alignItems="center">
-                        <Label color="#43809D" fontSize="20" fontWeight="bold" text="PetFinder" />
-                    </FlexboxLayout>
-                </GridLayout>
+                <Navbar />
             <!-- Termina Navbar -->
 
-            <GridLayout ~mainContent rows="*, 60">
+            <GridLayout ~mainContent rows="*, 60" backgroundColor="#F6F6F6">
                 <ScrollView row="0">
-                    <WrapLayout orientation="vertical">
-                        <GridLayout class="card" columns="*" rows="50, 300, 70, 50">
+                    <WrapLayout v-if="pets.length != 0" orientation="vertical">
+                        <GridLayout class="card" android:borderRadius="10" androidElevation="1" android:backgroundColor="white" padding="15" columns="*" rows="50, 300, 70, 50" v-for="(item, index) in pets" :key="index">
+                            <!-- Info del dueño -->
                             <FlexboxLayout justifyContent="space-between" col="0" row="0">
                                 <StackLayout orientation="horizontal">
                                     <Image width="50" borderRadius="100" src="http://i2.wp.com/www.kpopscene.com/wp-content/uploads/2016/05/chaewon-april-04.jpg" stretch="aspectFit" />
                                     <StackLayout orientation="vertical" marginLeft="10">
-                                        <Label color="#746767" fontWeight="bold" text="Jazmin Rodriguez" />
-                                        <Label color="#CCC7C7" fontSize="10" fontWeight="bold" text="12 min ago" />
+                                        <Label color="#746767" fontWeight="bold" :text="item.infoUser.name" />
+                                        <Label color="#CCC7C7" fontSize="10" fontWeight="bold" :text="item.report | timeAgo" />
                                     </StackLayout>
                                 </StackLayout>
                                 <StackLayout>
-                                    <Button borderRadius="30" height="35" width="65" fontSize="10" fontWeight="bold" backgroundColor="#F07C84" color="white" text="VER" />
+                                    <Button borderRadius="30" height="35" width="65" fontSize="10" fontWeight="bold" backgroundColor="#F07C84" color="white" text="VER" @tap="goToPetProfile(item.id)" />
                                 </StackLayout>
                             </FlexboxLayout>
-
+                            
+                            <!-- Imagen de la mascota -->
                             <StackLayout marginTop="10" borderRadius="20" col="0" row="1">
-                                <Image borderRadius="20" src="https://www.elimparcial.com/__export/1562252758517/sites/elimparcial/img/2019/07/04/perro_1.jpg_1359985867.jpg" stretch="aspectFill" />
+                                <Image borderRadius="20" :src="item.photos[0]" stretch="aspectFill" />
                             </StackLayout>
+
+                            <!-- Info de la mascota -->
                             <StackLayout marginTop="15" col="0" row="2">
-                                <Label fontSize="18" fontWeight="bold" text="Sr. Puchito" />
-                                <Label color="#746767" fontSize="13" fontWeight="bold" text="Lorem ipsum dolor sit amet, consectetur..." />
+                                <Label fontSize="18" fontWeight="bold" :text="item.name" />
+                                <Label color="#746767" fontSize="13" fontWeight="bold" :text="item.description" />
                             </StackLayout>
+
+                            <!-- Detalles de la mascota -->
                             <StackLayout col="0" row="3">
                                 <GridLayout columns="*, *" rows="50">
                                     <FlexboxLayout justifyContent="flex-start" alignItems="center" col="0" row="0">
-                                        <Image width="20" src="https://image.flaticon.com/icons/png/512/91/91544.png" stretch="aspectFit" />
-                                        <Label marginLeft="5" fontSize="13" text="Golden retriever" horizontalAlignment="center" />
+                                        <!-- Eleccion icono tipo mascota -->
+                                            <Label v-if="item.type == 'Perro'" text="" textWrap="true" fontSize="15" color="black" class="font-awesome" />
+                                            <Label v-if="item.type == 'Gato'" text="" textWrap="true" fontSize="15" color="black" class="font-awesome" />
+                                        <!-- Fin eleccion icono tipo mascota -->
+                                        <Label marginLeft="5" fontSize="13" :text="item.breed" horizontalAlignment="center" />
                                     </FlexboxLayout>
                                     <FlexboxLayout justifyContent="space-between" col="1" row="0">
                                         <StackLayout col="1" row="0">
-                                            <Image width="20" src="https://image.flaticon.com/icons/png/512/31/31370.png" stretch="aspectFit" />
-                                            <Label fontSize="13" text="3" horizontalAlignment="center" />
+                                            <Image v-if="item.sex == 'Macho'" width="20" src="https://cdn.icon-icons.com/icons2/1898/PNG/512/male_121077.png" stretch="aspectFit" />
+
+                                            <Image v-else width="20" src="https://cdn.icon-icons.com/icons2/1898/PNG/512/female_121037.png" stretch="aspectFit" />
+                                            <Label fontSize="13" :text="item.sex" horizontalAlignment="center" />
                                         </StackLayout>
 
                                         <StackLayout col="2" row="0">
                                             <Image width="20" src="https://image.flaticon.com/icons/png/512/17/17086.png" stretch="aspectFit" />
-                                            <Label fontSize="13" text="Blanco" horizontalAlignment="center" />
+                                            <Label fontSize="13" :text="item.firstColor" horizontalAlignment="center" />
                                         </StackLayout>
                                         <StackLayout>
                                             <Image width="20" src="https://image.flaticon.com/icons/png/512/30/30571.png" stretch="aspectFit" />
@@ -175,71 +130,16 @@
                                 </GridLayout>
                             </StackLayout>
                         </GridLayout>
-
-                        <GridLayout class="card" columns="*" rows="50, 300, 70, 50">
-                            <FlexboxLayout justifyContent="space-between" col="0" row="0">
-                                <StackLayout orientation="horizontal">
-                                    <Image width="50" borderRadius="100" src="https://66.media.tumblr.com/98ec4fed86b25db7fa9fd6acf0a50cc8/tumblr_presetYqo51xg1rzto1_250.png" stretch="aspectFit" />
-                                    <StackLayout orientation="vertical" marginLeft="10">
-                                        <Label color="#746767" fontWeight="bold" text="Perla Garcia Soto" />
-                                        <Label color="#CCC7C7" fontSize="10" fontWeight="bold" text="40 min ago" />
-                                    </StackLayout>
-                                </StackLayout>
-                                <StackLayout>
-                                    <Button borderRadius="30" height="35" width="65" fontSize="10" fontWeight="bold" backgroundColor="#F07C84" color="white" text="VER" />
-                                </StackLayout>
-                            </FlexboxLayout>
-
-                            <StackLayout marginTop="10" borderRadius="20" col="0" row="1">
-                                <Image borderRadius="20" src="https://www.fundacion-affinity.org/sites/default/files/el-gato-necesita-tener-acceso-al-exterior.jpg" stretch="aspectFill" />
-                            </StackLayout>
-                            <StackLayout marginTop="15" col="0" row="2">
-                                <Label fontSize="18" fontWeight="bold" text="Bigotes pintos" />
-                                <Label color="#746767" fontSize="13" fontWeight="bold" text="Lorem ipsum dolor sit amet, consectetur..." />
-                            </StackLayout>
-                            <StackLayout col="0" row="3">
-                                <GridLayout columns="*, *" rows="50">
-                                    <FlexboxLayout justifyContent="flex-start" alignItems="center" col="0" row="0">
-                                        <Image width="20" src="https://images.vexels.com/media/users/3/149745/isolated/preview/72a885d2b9f3d7704dc27cffa3f8d89b-icono-plano-de-la-estatua-del-gato-egipcio-by-vexels.png" stretch="aspectFit" />
-                                        <Label marginLeft="5" fontSize="13" text="Bombay" horizontalAlignment="center" />
-                                    </FlexboxLayout>
-                                    <FlexboxLayout justifyContent="space-between" col="1" row="0">
-                                        <StackLayout col="1" row="0">
-                                            <Image width="20" src="https://image.flaticon.com/icons/png/512/31/31370.png" stretch="aspectFit" />
-                                            <Label fontSize="13" text="2" horizontalAlignment="center" />
-                                        </StackLayout>
-
-                                        <StackLayout col="2" row="0">
-                                            <Image width="20" src="https://image.flaticon.com/icons/png/512/17/17086.png" stretch="aspectFit" />
-                                            <Label fontSize="13" text="Gris" horizontalAlignment="center" />
-                                        </StackLayout>
-                                        <StackLayout>
-                                            <Image width="20" src="https://image.flaticon.com/icons/png/512/30/30571.png" stretch="aspectFit" />
-                                            <Label fontSize="13" text="120" horizontalAlignment="center" />
-                                        </StackLayout>
-                                    </FlexboxLayout>
-                                </GridLayout>
-                            </StackLayout>
-                        </GridLayout>
                     </WrapLayout>
+                    <FlexboxLayout v-else height="100%" justifyContent="center" alignItems="center">
+                        <!-- <Label text="Cargando" /> -->
+                        <ActivityIndicator busy="true" />
+                    </FlexboxLayout>
                 </ScrollView>
                 
                 <!-- Inicia Footer -->
                     <StackLayout row="1" orientation="horizontal">
-                        <GridLayout columns="*, *, *, *" rows="60" class="navigation">
-                            <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="0" @tap="goToHome">
-                                <Image class="btn-navigation" src="http://simpleicon.com/wp-content/uploads/home-3.png" />
-                            </FlexboxLayout>
-                            <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="1">
-                                <Image class="btn-navigation" src="http://simpleicon.com/wp-content/uploads/home-3.png" />
-                            </FlexboxLayout>
-                            <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="2">
-                                <Image class="btn-navigation" src="http://simpleicon.com/wp-content/uploads/home-3.png" />
-                            </FlexboxLayout>
-                            <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="3">
-                                <Image class="btn-navigation" src="https://cdn0.iconfinder.com/data/icons/rounded-basics/24/rounded__menu-512.png" @tap="$refs.drawer.nativeView.showDrawer()" />
-                            </FlexboxLayout>
-                        </GridLayout>
+                        <Footer @sideDrawer="$refs.drawer.nativeView.showDrawer()" />
                     </StackLayout>
                 <!-- Termina Footer -->
             </GridLayout>
@@ -251,11 +151,16 @@
 //Firebase
 const firebase = require("nativescript-plugin-firebase")
 
+//MOMENT
+const moment = require('moment')
+
 //Vuex
 import { mapState } from 'vuex'
 
 //Pages
-import AddPet from './user/AddPet.vue'
+// import AddPet from './user/AddPet.vue'
+// import Profile from './user/Profile.vue'
+import PetProfile from './user/PetProfile.vue'
 import Home from './Home.vue'
 
 export default {
@@ -267,7 +172,7 @@ export default {
 
     data() {
         return {
-            
+            pets: []
         }
     },
 
@@ -281,6 +186,17 @@ export default {
 
             return title
         }
+    },
+
+    mounted(){
+        this.getPets()
+    },
+
+    filters: {
+        timeAgo(value){
+            moment.locale('es')
+            return moment(value).startOf('hour').fromNow();
+        },
     },
 
     methods: {
@@ -301,6 +217,99 @@ export default {
                     name: 'fade',
                 },
             })
+        },
+
+        goToProfile(){
+            this.$navigateTo(Profile, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
+        },
+
+        goToPetProfile(id){
+            this.$navigateTo(PetProfile, {
+                props:{
+                    id: id,
+                },
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
+        },
+
+        activarSideDrawer(){
+            $refs.drawer.nativeView.showDrawer()
+        },
+
+        // Obtener a las mascotas del usuario
+        async getPets(){
+            try{
+                let response = firebase.firestore.collection('pets').where('status', '==', 2)
+                                    .get()
+                                    .then((query) => {
+                                        query.forEach(async doc => {
+                                            Object.defineProperty(doc.data(), 'id', {
+                                                enumerable: true,
+                                                configurable: true,
+                                                writable: true,
+                                                value: doc.id
+                                            })
+
+                                            try{
+                                                
+
+                                                //Usuario
+                                                let user = await firebase.firestore.collection('users')
+                                                                            .doc(doc.data().user)
+                                                                            .get()
+
+                                                Object.defineProperty(doc.data(), 'infoUser', {
+                                                    enumerable: true,
+                                                    configurable: true,
+                                                    writable: true,
+                                                    value: user.data()
+                                                })
+
+                                                //Fotos
+                                                let photosArray = []
+                                                let photos = await firebase.firestore.collection('photos_pet')
+                                                                        .limit(1)
+                                                                        .where('pet', '==', doc.id)
+                                                                        .get()
+                                                                        .then((photosQuery) => {
+                                                                            photosQuery.forEach(doc => {
+                                                                                photosArray.push(doc.data().image)
+                                                                            })
+                                                                        })
+
+                                                Object.defineProperty(doc.data(), 'photos', {
+                                                    enumerable: true,
+                                                    configurable: true,
+                                                    writable: true,
+                                                    value: photosArray
+                                                })
+
+                                                this.pets.push(doc.data())
+                                            }
+                                            catch(e){
+                                                console.log(e)
+                                            }
+                                            finally{
+
+                                            }
+                                            
+                                        })
+                                    })
+                                    .catch(function(error) {
+                                        console.log("Error getting documents: ", error)
+                                    })
+            }
+            catch(e){
+                console.log(e)
+            }
         }
     }
 }
