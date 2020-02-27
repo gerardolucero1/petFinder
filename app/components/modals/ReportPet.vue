@@ -7,7 +7,7 @@
 <template>
 	<StackLayout width="400" height="650" backgroundColor="white">
 		<ScrollView height="650">
-			<WrapLayout padding="20">
+			<WrapLayout v-if="view == 1" padding="20">
 				<StackLayout class="reporte_field" marginTop="10">
 					<Label text="Nombre de la colonia" textWrap="true" fontSize="14" fontWeight="bold" />
 					<TextField text="" fontSize="14" v-model="report.suburb" />
@@ -35,7 +35,17 @@
 
 				<StackLayout class="reporte_field" marginTop="10">
 					<Button backgroundColor="#EC6598" color="white" borderRadius="15" width="70%" text="Reportar" @tap="reportPet" />
+					<Button backgroundColor="#051E34" color="white" borderRadius="15" width="70%" text="Cancelar" marginTop="10" @tap="closeModal" />
 				</StackLayout>
+			</WrapLayout>
+
+			<WrapLayout v-else>
+				<FlexboxLayout width="400" height="650" justifyContent="center" alignItems="center" flexDirection="column">
+					<Image width="100" src="https://pngimage.net/wp-content/uploads/2018/06/reporte-png-1.png" stretch="aspectFit" />
+					
+					<Label text="El reporte ha sido dado de alta" textWrap="true" marginTop="20" />
+					<Button backgroundColor="#EC6598" color="white" borderRadius="15" width="70%" text="Aceptar" marginTop="20" @tap="closeModal" />
+				</FlexboxLayout>
 			</WrapLayout>
 		</ScrollView>
 	</StackLayout>
@@ -90,6 +100,7 @@ export default {
 
 	data () {
 	    return {
+			view: 1,
 			report: {
 				suburb: '',
 				street_1: '',
@@ -108,7 +119,7 @@ export default {
 		async reportPet(){
 			try {
 				//Cargamos la pantalla de espera
-				loader.show(options)
+				// loader.show(options)
 				
 				Object.defineProperty(this.report, 'idPet', {
 					enumerable: true,
@@ -126,29 +137,19 @@ export default {
 
 				let response = await firebase.firestore.collection('reports').add(this.report)
 
-				if(response){
-					this.updateStatusPet()
-				}
+				let updateStatus = await firebase.firestore.collection('pets').doc(this.id)
+													.update({ status: 2 })
+
+				this.view = 2
+
 			} catch (e) {
 				console.log(e)
 			}
 		},
 
-		//Firebase
-		async updateStatusPet(){
-			try{
-				let response = await firebase.firestore.collection('pets').doc(this.id)
-													.update({ status: 2 })
-
-				if(response){
-					loader.hide()
-					this.$modal.close()
-				}
-			}	
-			catch(e){
-				console.log(e)
-			}
-		},
+		closeModal(){
+			this.$modal.close()
+		}
 	}
 }
 </script>

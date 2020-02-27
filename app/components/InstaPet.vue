@@ -72,70 +72,58 @@
             <!-- Termina Navbar -->
 
             <GridLayout ~mainContent rows="*, 60" backgroundColor="#F6F6F6">
-                <ScrollView row="0">
-                    <WrapLayout v-if="pets.length != 0" orientation="vertical">
-                        <GridLayout class="card" android:borderRadius="10" androidElevation="1" android:backgroundColor="white" padding="15" columns="*" rows="50, 300, 70, 50" v-for="(item, index) in pets" :key="index">
-                            <!-- Info del dueño -->
-                            <FlexboxLayout justifyContent="space-between" col="0" row="0">
-                                <StackLayout orientation="horizontal">
-                                    <Image width="50" borderRadius="100" src="http://i2.wp.com/www.kpopscene.com/wp-content/uploads/2016/05/chaewon-april-04.jpg" stretch="aspectFit" />
-                                    <StackLayout orientation="vertical" marginLeft="10">
-                                        <Label color="#746767" fontWeight="bold" :text="item.infoUser.name" />
-                                        <Label color="#CCC7C7" fontSize="10" fontWeight="bold" :text="item.report | timeAgo" />
-                                    </StackLayout>
-                                </StackLayout>
-                                <StackLayout>
-                                    <Button borderRadius="30" height="35" width="65" fontSize="10" fontWeight="bold" backgroundColor="#F07C84" color="white" text="VER" @tap="goToPetProfile(item.id)" />
-                                </StackLayout>
-                            </FlexboxLayout>
-                            
-                            <!-- Imagen de la mascota -->
-                            <StackLayout marginTop="10" borderRadius="20" col="0" row="1">
-                                <Image borderRadius="20" :src="item.photos[0]" stretch="aspectFill" />
-                            </StackLayout>
+                <StackLayout row="0">
+                    <TabView :selectedIndex="selectedIndex" tabTextFontSize="25" tabTextColor="black" iosIconRenderingMode="alwaysOriginal">
+                        <TabViewItem title="" class="font-awesome">
+                            <GridLayout rows="*">
+                                <ScrollView row="0">
+                                    <WrapLayout v-if="pets.length != 0" orientation="vertical">
+                                        <GridLayout class="card" android:borderRadius="10" androidElevation="1" android:backgroundColor="white" padding="15" columns="*" rows="50, 300, 70" v-for="(item, index) in pets" :key="index">
+                                            <!-- Info del dueño -->
+                                            <FlexboxLayout justifyContent="space-between" col="0" row="0">
+                                                <StackLayout orientation="horizontal">
+                                                    <Image width="50" borderRadius="100" src="http://i2.wp.com/www.kpopscene.com/wp-content/uploads/2016/05/chaewon-april-04.jpg" stretch="aspectFit" />
+                                                    <StackLayout orientation="vertical" marginLeft="10">
+                                                        <Label color="#746767" fontWeight="bold" :text="item.infoUser.name" />
+                                                        <Label color="#CCC7C7" fontSize="10" fontWeight="bold" :text="item.report | timeAgo" />
+                                                    </StackLayout>
+                                                </StackLayout>
+                                                <StackLayout>
+                                                    <Button borderRadius="30" height="35" width="65" fontSize="10" fontWeight="bold" backgroundColor="#F07C84" color="white" text="VER" @tap="goToPetProfile(item.id)" />
+                                                </StackLayout>
+                                            </FlexboxLayout>
+                                            
+                                            <!-- Imagen de la mascota -->
+                                            <StackLayout marginTop="10" borderRadius="20" col="0" row="1">
+                                                <Image borderRadius="20" :src="item.photos[0]" stretch="aspectFill" />
+                                            </StackLayout>
 
-                            <!-- Info de la mascota -->
-                            <StackLayout marginTop="15" col="0" row="2">
-                                <Label fontSize="18" fontWeight="bold" :text="item.name" />
-                                <Label color="#746767" fontSize="13" fontWeight="bold" :text="item.description" />
-                            </StackLayout>
+                                            <!-- Info de la mascota -->
+                                            <StackLayout marginTop="15" col="0" row="2">
+                                                <Label color="#746767" textAlignment="justify" fontSize="13" fontWeight="bold" textWrap="true" :text="item.description" />
+                                            </StackLayout>
 
-                            <!-- Detalles de la mascota -->
-                            <StackLayout col="0" row="3">
-                                <GridLayout columns="*, *" rows="50">
-                                    <FlexboxLayout justifyContent="flex-start" alignItems="center" col="0" row="0">
-                                        <!-- Eleccion icono tipo mascota -->
-                                            <Label v-if="item.type == 'Perro'" text="" textWrap="true" fontSize="15" color="black" class="font-awesome" />
-                                            <Label v-if="item.type == 'Gato'" text="" textWrap="true" fontSize="15" color="black" class="font-awesome" />
-                                        <!-- Fin eleccion icono tipo mascota -->
-                                        <Label marginLeft="5" fontSize="13" :text="item.breed" horizontalAlignment="center" />
+                                        </GridLayout>
+                                    </WrapLayout>
+                                    <FlexboxLayout v-else height="100%" justifyContent="center" alignItems="center">
+                                        <!-- <Label text="Cargando" /> -->
+                                        <ActivityIndicator busy="true" />
                                     </FlexboxLayout>
-                                    <FlexboxLayout justifyContent="space-between" col="1" row="0">
-                                        <StackLayout col="1" row="0">
-                                            <Image v-if="item.sex == 'Macho'" width="20" src="https://cdn.icon-icons.com/icons2/1898/PNG/512/male_121077.png" stretch="aspectFit" />
-
-                                            <Image v-else width="20" src="https://cdn.icon-icons.com/icons2/1898/PNG/512/female_121037.png" stretch="aspectFit" />
-                                            <Label fontSize="13" :text="item.sex" horizontalAlignment="center" />
-                                        </StackLayout>
-
-                                        <StackLayout col="2" row="0">
-                                            <Image width="20" src="https://image.flaticon.com/icons/png/512/17/17086.png" stretch="aspectFit" />
-                                            <Label fontSize="13" :text="item.firstColor" horizontalAlignment="center" />
-                                        </StackLayout>
-                                        <StackLayout>
-                                            <Image width="20" src="https://image.flaticon.com/icons/png/512/30/30571.png" stretch="aspectFit" />
-                                            <Label fontSize="13" text="137" horizontalAlignment="center" />
-                                        </StackLayout>
-                                    </FlexboxLayout>
-                                </GridLayout>
-                            </StackLayout>
-                        </GridLayout>
-                    </WrapLayout>
-                    <FlexboxLayout v-else height="100%" justifyContent="center" alignItems="center">
-                        <!-- <Label text="Cargando" /> -->
-                        <ActivityIndicator busy="true" />
-                    </FlexboxLayout>
-                </ScrollView>
+                                </ScrollView>
+                            </GridLayout>
+                        </TabViewItem>
+                        <TabViewItem title="" class="font-awesome">
+                            <Label text="Content for Tab 2" />
+                        </TabViewItem>
+                        <TabViewItem title="" class="font-awesome">
+                            <Label text="Content for Tab 2" />
+                        </TabViewItem>
+                        <TabViewItem title="" class="font-awesome">
+                            <Label text="Content for Tab 2" />
+                        </TabViewItem>
+                    </TabView>
+                </StackLayout>
+                
                 
                 <!-- Inicia Footer -->
                     <StackLayout row="1" orientation="horizontal">
@@ -170,6 +158,7 @@ export default {
 
     data() {
         return {
+            selectedIndex: 0,
             pets: []
         }
     },
@@ -217,7 +206,7 @@ export default {
         // Obtener a las mascotas del usuario
         async getPets(){
             try{
-                let response = firebase.firestore.collection('pets').where('status', '==', 2)
+                let response = firebase.firestore.collection('pets')
                                     .get()
                                     .then((query) => {
                                         query.forEach(async doc => {

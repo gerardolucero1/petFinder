@@ -22,6 +22,7 @@
     "nativescript-drop-down": "^5.0.4",
     "nativescript-imagepicker": "^7.1.0",
     "nativescript-loading-indicator": "^2.5.2",
+    "nativescript-photoviewer": "^2.1.5",
     "nativescript-plugin-firebase": "^10.3.3",
     "nativescript-socketio": "^3.3.1",
     "nativescript-toasty": "^1.4.0",

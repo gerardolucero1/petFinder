@@ -21,7 +21,7 @@
         <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="0" @tap="goToHome">
             <Label text="" textWrap="true" fontSize="25" color="black" class="font-awesome" />
         </FlexboxLayout>
-        <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="1">
+        <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="1" @tap="goToInstaPet">
             <Label text="" textWrap="true" fontSize="25" color="black" class="font-awesome" />
         </FlexboxLayout>
         <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="2">
@@ -36,6 +36,7 @@
 <script>
 //Pages
 import Home from './../Home.vue'
+import InstaPet from './../InstaPet.vue'
 
 export default{
 	name: 'Footer',
@@ -49,6 +50,15 @@ export default{
 	methods: {
         goToHome(){
             this.$navigateTo(Home, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
+        },
+
+        goToInstaPet(){
+            this.$navigateTo(InstaPet, {
                 animated: true,
                 transition: {
                     name: 'fade',

@@ -76,7 +76,7 @@
     }
 
     .active{
-        background-color: #F8F8F8;
+        background-color: rgb(255, 255, 255);
     }
 
 </style>

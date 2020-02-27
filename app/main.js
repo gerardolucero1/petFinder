@@ -9,7 +9,7 @@ import store from './store'
 import Footer from './components/shared/Footer.vue'
 import Navbar from './components/shared/Navbar.vue'
 
-Vue.use(VueDevtools, { host: '192.168.0.4' })
+Vue.use(VueDevtools, { host: '192.168.0.5' })
 
 var firebase = require("nativescript-plugin-firebase")
 

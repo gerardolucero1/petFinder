@@ -47,7 +47,7 @@
 	                                    </StackLayout>
 	                                </StackLayout>
 	                                <StackLayout>
-	                                    <Label v-if="pet != null" marginTop="5" borderRadius="30" fontSize="10" fontWeight="bold" color="#CCC7C7" :text="pet.birthdate | formatDate" />
+	                                    <Label v-if="pet != null" marginTop="5" borderRadius="30" fontSize="10" fontWeight="bold" color="#CCC7C7" :text="pet.report.created_at | formatDate" />
 	                                </StackLayout>
 	                            </FlexboxLayout>
 								
@@ -55,17 +55,25 @@
 									<Label marginTop="10" color="#746767" textWrap="true" fontSize="18" :text="pet.description" />
 									<Label color="#746767" marginTop="10" text="Caracteristicas:" />
 									<Label color="#746767" v-for="(item, index) in pet.features" :key="index" marginTop="10" :text="'• ' + item.text" />
-									<WrapLayout marginTop="20">
+                                    <WrapLayout marginTop="20">
                                         <GridLayout v-for="(item, index) in pet.photos" :key="index" width="33.333%" height="100" padding="2">
                                             <Image :src="item" stretch="aspectFill" @tap="openGallery" />
                                         </GridLayout>
                                     </WrapLayout>
-								
-								</StackLayout>
+
+									<Label marginTop="10" color="#746767" text="Reporte:" fontWeight="bold" textWrap="true" />
+
+									<Label marginTop="5" color="#746767" :text="'Colonia: ' + pet.report.suburb" textWrap="true" />
+									<Label marginTop="5" color="#746767" :text="'Calle: ' + pet.report.street_1" textWrap="true" />
+									<Label marginTop="5" color="#746767" :text="'Calle: ' + pet.report.street_2" textWrap="true" />
+									<Label marginTop="5" color="#746767" :text="'Notas: ' + pet.report.notes" textWrap="true" />
+									<Label marginTop="5" color="#746767" :text="formatHour" textWrap="true" />
+									
+									
+                                </StackLayout>
+                
 	                            <FlexboxLayout row="2" marginTop="10" justifyContent="space-between" alignItems="center">
-	                            	<Button backgroundColor="#212892" color="white" borderRadius="15" width="25%" text="♥" />
-	                            	<Button v-if="pet != null && pet.status == 1" backgroundColor="#EC6598" color="white" borderRadius="15" width="70%" text="Reportar" @tap="reportPet" />
-	                            	<Button v-else backgroundColor="#EC6598" color="white" borderRadius="15" width="70%" text="Cancelar Reporte" @tap="cancelReport" />
+	                            	<Button v-if="pet != null && pet.status == 2" backgroundColor="#EC6598" color="white" borderRadius="15" width="100%" text="Contactar al dueño" @tap="contact" />
 	                            </FlexboxLayout>
 	                        </GridLayout>
 						</GridLayout>
@@ -104,11 +112,8 @@ const photoViewer = new PhotoViewer()
 //Vuex
 import { mapState } from 'vuex'
 
-//Modals
-import ReportPet from './../modals/ReportPet.vue'
-
 export default{
-	name: 'PetProfile',
+	name: 'Report',
 
 	props:[
         'id'
@@ -133,14 +138,26 @@ export default{
             let title = 'PetFinder'
 
             return title
-        },
+		},
+		
+		formatHour(){
+			if(this.pet != null){
+				moment.locale('es')
+				let hour = moment(this.pet.report.hour).format('LT')
+				
+				return `Hora: ${hour}`
+			}
+
+			return ''
+			
+		}
     },
 
     filters: {
     	formatDate(value){
             moment.locale('es')
-            return moment(value).format('LL')
-        },
+            return moment(value).startOf('hour').fromNow();
+		},
     },
 
 	methods: {
@@ -197,7 +214,8 @@ export default{
 		//Firebase
 		async getPet(){
 			try{
-				let photosArray = []
+                let photosArray = []
+                let report = null
 
 				let response = await firebase.firestore.collection('pets')
 														.doc(this.id)
@@ -210,13 +228,30 @@ export default{
 				        									photosQuery.forEach(doc => {
 																photosArray.push(doc.data().image)
 				        									})
-				        								})
+                                                        })
+                                                        
+                let reportPet = await firebase.firestore.collection('reports')
+                                                        .where('idPet', '==', this.id)
+                                                        .where('active', '==', true)
+                                                        .get()
+                                                        .then((reportQuery) => {
+				        									reportQuery.forEach(doc => {
+																report = doc.data()
+				        									})
+                                                        })
 
 				Object.defineProperty(response.data(), 'photos', {
 				  	enumerable: true,
 				  	configurable: true,
 				  	writable: true,
 				  	value: photosArray
+                })
+                
+                Object.defineProperty(response.data(), 'report', {
+				  	enumerable: true,
+				  	configurable: true,
+				  	writable: true,
+				  	value: report
 				})
 
 				if(response.exists){
@@ -226,36 +261,9 @@ export default{
 			catch(e){
 				console.log(e)
 			}
-		},
-
-		async cancelReport(){
-			console.log('hola')
-			try {
-				let response = await firebase.firestore.collection('reports')
-													.where('idPet', '==', this.id)
-													.get()
-
-				if(response){
-					// console.log(response.id)
-					response.forEach(async doc => {
-						let updateReport = await firebase.firestore.collection('reports')
-																.doc(doc.id)
-																.update({ active: false })
-
-						let updatePet = await firebase.firestore.collection('pets')
-																.doc(this.id)
-																.update({ status: 1 })
-						if(updateReport){
-							this.pet.status = 1
-						}
-					})
-				}
-			} catch (error) {
-				
-			}
-		},
-
-		openGallery(){
+        },
+        
+        openGallery(){
             let photoviewerOptions = {
                 startIndex: 0,
                 android: {
@@ -267,12 +275,8 @@ export default{
             photoViewer.showGallery(this.pet.photos, photoviewerOptions);
         },
 
-		reportPet(){
-			this.$showModal(ReportPet, {
-                props:{
-                    id: this.id,
-                }
-            })
+		contact(){
+			alert('Dueño contactado')
 		}
 	}
 }
