@@ -1,9 +1,7 @@
 <style scoped>
     .drawer-body{
-        background: rgb(21,45,60);
-        background: -webkit-linear-gradient(bottom, rgba(21,45,60,1) 0%, rgba(24,80,113,1) 64%, rgba(33,99,134,1) 100%);
-        background: -o-linear-gradient(bottom, rgba(21,45,60,1) 0%, rgba(24,80,113,1) 64%, rgba(33,99,134,1) 100%);
-        background: linear-gradient(to top, rgba(21,45,60,1) 0%, rgba(24,80,113,1) 64%, rgba(33,99,134,1) 100%);
+        background: rgb(255,255,255);
+        background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 33%, rgba(250,250,250,1) 100%);
     }
 
     .drawer-layer{
@@ -42,35 +40,35 @@
             <FlexboxLayout height="200" justifyContent="center" alignItems="center" flexDirection="column">
                 <Image width="70" borderRadius="100" src="http://i2.wp.com/www.kpopscene.com/wp-content/uploads/2016/05/chaewon-april-04.jpg" />
 
-                <Label color="white" :text="user.name" fontWeight="bold" fontSize="15" />
+                <Label color="black" :text="user.name" fontWeight="bold" fontSize="15" />
                 <Label color="#5FA5C4" :text="user.email" fontWeight="bold" fontSize="12" />
             </FlexboxLayout>
 
             <FlexboxLayout class="drawer-item-container" justifyContent="flex-start" alignItems="center">
                 <Label text="" textWrap="true" fontSize="18" color="black" class="font-awesome" />
-                <Label color="white" fontSize="13" class="drawer-item" text="Mi Perfil" @tap="goToProfile"/>
+                <Label color="black" fontSize="13" class="drawer-item" text="Mi Perfil" @tap="goToProfile"/>
             </FlexboxLayout>
 
             <FlexboxLayout class="drawer-item-container" marginTop="20" justifyContent="flex-start" alignItems="center">
                 <Label text="" textWrap="true" fontSize="18" color="black" class="font-awesome" />
-                <Label color="white" fontSize="13" class="drawer-item" text="Mis Matchs"/>
+                <Label color="black" fontSize="13" class="drawer-item" text="Mis Matchs"/>
             </FlexboxLayout>
 
             <FlexboxLayout class="drawer-item-container" marginTop="20" justifyContent="flex-start" alignItems="center">
                 <Label text="" textWrap="true" fontSize="16" color="black" class="font-awesome" />
-                <Label color="white" fontSize="13" class="drawer-item" text="Mi Tienda"/>
+                <Label color="black" fontSize="13" class="drawer-item" text="Mi Tienda"/>
             </FlexboxLayout>
 
             <StackLayout class="line" marginTop="20" />
 
             <FlexboxLayout class="drawer-item-container" marginTop="20" justifyContent="flex-start" alignItems="center" @tap="goToAddPet">
                 <Label text="" textWrap="true" fontSize="18" color="black" class="font-awesome" />
-                <Label color="white" fontSize="13" class="drawer-item" text="Agregar Mascota"/>
+                <Label color="black" fontSize="13" class="drawer-item" text="Agregar Mascota"/>
             </FlexboxLayout>
 
             <FlexboxLayout class="drawer-item-container" marginTop="20" justifyContent="flex-start" alignItems="center">
                 <Label text="" textWrap="true" fontSize="18" color="black" class="font-awesome" />
-                <Label color="white" fontSize="13" class="drawer-item" text="Mis Configuraciones"/>
+                <Label color="black" fontSize="13" class="drawer-item" text="Mis Configuraciones"/>
             </FlexboxLayout>
         </StackLayout>
 

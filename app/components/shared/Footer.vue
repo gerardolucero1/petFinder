@@ -8,7 +8,6 @@
         bottom: 0;
         border-width: 1 0 0 0;
         border-color: rgba(218, 218, 218, 1);
-        border-radius: 20 20 0 0;
     }
 
     .btn-navigation{
@@ -17,7 +16,7 @@
 </style>
 
 <template>
-	<GridLayout columns="*, *, *, *" rows="60" class="navigation" backgroundColor="white">
+	<GridLayout columns="*, *, *, *" rows="50" class="navigation" backgroundColor="#FAFAFA">
         <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="0" @tap="goToHome">
             <Label text="" textWrap="true" fontSize="25" color="black" class="font-awesome" />
         </FlexboxLayout>

@@ -1,82 +1,22 @@
 <style>
-    ActionBar {
-        background-color: #51AE81;
-        color: #ffffff;
-    }
-
-    .header-text{
-        color: white;
-        font-weight: bold;
-        font-size: 18px;
-    }
-
-    /*Estilos Navbar*/
-    .drawer-body{
-        background: rgb(21,45,60);
-        background: -webkit-linear-gradient(bottom, rgba(21,45,60,1) 0%, rgba(24,80,113,1) 64%, rgba(33,99,134,1) 100%);
-        background: -o-linear-gradient(bottom, rgba(21,45,60,1) 0%, rgba(24,80,113,1) 64%, rgba(33,99,134,1) 100%);
-        background: linear-gradient(to top, rgba(21,45,60,1) 0%, rgba(24,80,113,1) 64%, rgba(33,99,134,1) 100%);
-    }
-
-    .drawer-layer{
-        background-image: url('https://img.wallpapersafari.com/desktop/1280/1024/14/66/raICAv.jpg');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-    }
-
-    .drawer-header {
-        width: 100%;
-        height: 20%;
-    }
-
-    .drawer-item-container{
-        width: 100%;
-        padding: 30px 0 30px 100px;
-    }
-
-    .drawer-item {
-        color: #333333;
-        font-size: 16;
-        margin-left: 40px;
-    }
-
-    .line{
-        width: 80%;
-        border-width: 1 0 0 0;
-        border-color: #1D5A7B;
-    }
-
-    .card{
-        width: 90%;
-        margin-bottom: 70px;
-        margin-left: 5%;
-        margin-top: 30px;
-    }
 
 </style>
 
 <template>
-    <Page actionBarHidden="true">
-        <ActionBar>
-            <StackLayout orientation="horizontal"
-                ios:horizontalAlignment="center"
-                android:horizontalAlignment="left">
-                <Label class="header-text" :text="changeTitle"></Label>
-            </StackLayout>
-        </ActionBar>
+    <Page actionBarHidden="false">
+        <Actionbar />
 
-        <RadSideDrawer ref="drawer" drawerTransition="ScaleDownPusherTransition">
+        <RadSideDrawer ref="drawer">
             <!-- Inicia Navbar -->
                 <Navbar />
             <!-- Termina Navbar -->
 
-            <GridLayout ~mainContent rows="*, 60" backgroundColor="#F6F6F6">
+            <GridLayout ~mainContent rows="*, 50" backgroundColor="#FFFFFF">
                 <ScrollView row="0">
                     <WrapLayout v-if="pets.length != 0" orientation="vertical">
-                        <GridLayout class="card" android:borderRadius="10" androidElevation="1" android:backgroundColor="white" padding="15" columns="*" rows="50, 300, 70, 50" v-for="(item, index) in pets" :key="index">
+                        <GridLayout class="" borderWidth="0 0 1 0" borderColor="rgba(218, 218, 218, 1)" marginTop="5" columns="*" rows="80, 300, 70, 50" v-for="(item, index) in pets" :key="index">
                             <!-- Info del dueño -->
-                            <FlexboxLayout justifyContent="space-between" col="0" row="0">
+                            <FlexboxLayout padding="15" justifyContent="space-between" col="0" row="0">
                                 <StackLayout orientation="horizontal">
                                     <Image width="50" borderRadius="100" src="http://i2.wp.com/www.kpopscene.com/wp-content/uploads/2016/05/chaewon-april-04.jpg" stretch="aspectFit" />
                                     <StackLayout orientation="vertical" marginLeft="10">
@@ -90,18 +30,18 @@
                             </FlexboxLayout>
                             
                             <!-- Imagen de la mascota -->
-                            <StackLayout marginTop="10" borderRadius="20" col="0" row="1">
-                                <Image borderRadius="20" :src="item.photos[0]" stretch="aspectFill" />
+                            <StackLayout marginTop="-5" col="0" row="1" >
+                                <Image :src="item.photos[0]" stretch="aspectFill" />
                             </StackLayout>
 
                             <!-- Info de la mascota -->
-                            <StackLayout marginTop="15" col="0" row="2">
+                            <StackLayout padding="0 10" marginTop="15" col="0" row="2">
                                 <Label fontSize="18" fontWeight="bold" :text="item.name" />
                                 <Label color="#746767" fontSize="13" fontWeight="bold" :text="item.description" />
                             </StackLayout>
 
                             <!-- Detalles de la mascota -->
-                            <StackLayout col="0" row="3">
+                            <StackLayout padding="0 10" col="0" row="3">
                                 <GridLayout columns="*, *" rows="50">
                                     <FlexboxLayout justifyContent="flex-start" alignItems="center" col="0" row="0">
                                         <!-- Eleccion icono tipo mascota -->
@@ -178,12 +118,6 @@ export default {
         ...mapState([
                 'user'
             ]),
-
-        changeTitle(){
-            let title = 'PetFinder'
-
-            return title
-        }
     },
 
     mounted(){

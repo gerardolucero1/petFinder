@@ -1,102 +1,25 @@
-<style scoped>
-    ActionBar {
-        background-color: #51AE81;
-        color: #ffffff;
-    }
-
-    .header-text{
-        color: white;
-        font-weight: bold;
-        font-size: 18px;
-    }
-
-    .navigation{
-        width: 100%;
-        height: 100%;
-        left: 0;
-        bottom: 0;
-        background-color: white;
-        border-width: 1 0 0 0;
-        border-color: rgba(218, 218, 218, 1);
-        border-radius: 20 20 0 0;
-    }
-
-    /*Estilos Navbar*/
-    .drawer-body{
-        background: rgb(21,45,60);
-        background: -webkit-linear-gradient(bottom, rgba(21,45,60,1) 0%, rgba(24,80,113,1) 64%, rgba(33,99,134,1) 100%);
-        background: -o-linear-gradient(bottom, rgba(21,45,60,1) 0%, rgba(24,80,113,1) 64%, rgba(33,99,134,1) 100%);
-        background: linear-gradient(to top, rgba(21,45,60,1) 0%, rgba(24,80,113,1) 64%, rgba(33,99,134,1) 100%);
-    }
-
-    .drawer-layer{
-        background-image: url('https://img.wallpapersafari.com/desktop/1280/1024/14/66/raICAv.jpg');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-    }
-
-    .drawer-header {
-        width: 100%;
-        height: 20%;
-    }
-
-    .drawer-item-container{
-        width: 100%;
-        padding: 30px 0 30px 100px;
-    }
-
-    .drawer-item {
-        color: #333333;
-        font-size: 16;
-        margin-left: 40px;
-    }
-
-    .line{
-        width: 80%;
-        border-width: 1 0 0 0;
-        border-color: #1D5A7B;
-    }
-
-    /*Estilos Footer*/
-    .btn-navigation{
-        width: 90px;
-    }
-
-    .card{
-        width: 90%;
-        margin-bottom: 70px;
-        margin-left: 5%;
-        margin-top: 30px;
-    }
-    
+<style>
     /*Estilos pagina*/
     .dropDown{
         width: 100%;
     }
 
     .active{
-        background-color: rgb(255, 255, 255);
+        background-color: #FAFAFA;
     }
 
 </style>
 
 <template>
-    <Page actionBarHidden="true">
-        <ActionBar>
-            <StackLayout orientation="horizontal"
-                ios:horizontalAlignment="center"
-                android:horizontalAlignment="left">
-                <Label class="header-text" :text="changeTitle"></Label>
-            </StackLayout>
-        </ActionBar>
+    <Page actionBarHidden="false">
+        <Actionbar />
 
         <RadSideDrawer ref="drawer">
             <!-- Inicia Navbar -->
                 <Navbar />
             <!-- Termina Navbar -->
 
-            <GridLayout ~mainContent rows="*, 60" backgroundColor="#F6F6F6">
+            <GridLayout ~mainContent rows="*, 50" backgroundColor="#FFFFFF">
                 <StackLayout row="0">
                     <!-- Eleccion tipo de mascota -->
                     <GridLayout v-if="view == 0" rows="200, *, 60">

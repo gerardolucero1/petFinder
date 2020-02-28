@@ -8,6 +8,7 @@ import store from './store'
 //Components
 import Footer from './components/shared/Footer.vue'
 import Navbar from './components/shared/Navbar.vue'
+import Actionbar from './components/shared/Actionbar.vue'
 
 Vue.use(VueDevtools, { host: '192.168.0.5' })
 
@@ -45,6 +46,7 @@ Vue.registerElement(
 Vue.registerElement('DropDown', () => require('nativescript-drop-down/drop-down').DropDown)
 Vue.component('Footer', Footer)
 Vue.component('Navbar', Navbar)
+Vue.component('Actionbar', Actionbar)
 
 new Vue({
   store,

@@ -15,7 +15,7 @@
 		width: 90%;
 		height: 80;
 		border-radius: 25;
-		background-color: white;
+		background-color: #FAFAFA;
 		color: black;
 		font-weight: bold;
 	}
@@ -28,7 +28,7 @@
                 <Navbar />
             <!-- Termina Navbar -->
 
-            <GridLayout ~mainContent rows="*, 60" backgroundColor="#F6F6F6">
+            <GridLayout ~mainContent rows="*, 50" backgroundColor="#FFFFFF">
                 <GridLayout row="0" rows="80, 300, *">
 					<StackLayout row="1" margin="-200 0 0 0">
 						<Image v-if="pet != null" id="img" row="1" :src="pet.photos[0]" stretch="aspectFill" />
