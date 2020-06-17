@@ -8,7 +8,7 @@
 
         <RadSideDrawer ref="drawer">
             <!-- Inicia Navbar -->
-                <Navbar />
+            <Navbar />
             <!-- Termina Navbar -->
 
             <GridLayout ~mainContent rows="*, 50" backgroundColor="#FFFFFF">
